@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.4'
@@ -11,7 +13,25 @@ sourceCompatibility = '17'
 repositories {
 	mavenCentral()
 }
+// 환경변수 처리 후 주석 풀기
+/*
+def env = new JsonSlurper().parse(new File('env.json'))
 
+// env 변수를 사용하여 데이터베이스 연결 정보를 가져올 수 있습니다.
+def DB_URL = env.DB_URL
+def DB_USERNAME = env.DB_USERNAME
+def DB_PASSWORD = env.DB_PASSWORD
+def DB_NAME = env.DB_NAME
+
+// application plugin에서 사용하는 설정
+run {
+	// database.name 프로퍼티를 ${DB_NAME}의 값으로 설정
+	systemProperty 'DB_NAME', DB_NAME
+	systemProperty 'DB_URL', DB_URL
+	systemProperty 'DB_USERNAME', DB_USERNAME
+	systemProperty 'DB_PASSWORD', DB_PASSWORD
+}
+*/
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter'
@@ -32,6 +52,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.4'
+
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
 }
 
