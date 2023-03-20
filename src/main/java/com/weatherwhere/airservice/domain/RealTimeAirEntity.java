@@ -15,10 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RealTimeAirEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "air_pollution_id")
-    private Long id;
-
     @Column(name = "measuring_station")
     private String stationName;
 

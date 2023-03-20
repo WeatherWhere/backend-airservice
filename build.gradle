@@ -23,7 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.0.4'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
   
-  runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'org.postgresql:postgresql'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -34,8 +34,19 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.4'
+
+}
+
+configurations{
+	all{
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
