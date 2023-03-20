@@ -25,7 +25,7 @@ public class RealTimeAirController {
                 "&pageNo=1" +
                 "&numOfRows=1" +
                 "&returnType=json" +
-                "&serviceKey=LKiVUvMq5P2zZ88FZoOq/h0k9y98k2pEdRcJSheoYPwZxYlcaGkQugApuMndBS0dqRg1QeziMPwW9rbVvRIcRA==";
+                "&serviceKey="+System.getProperty("AIR_FORECAST_SERVICE_KEY");
         RealTimeAirDto realTimeAirDto = restTemplate.getForObject(apiUrl, RealTimeAirDto.class);
         realTimeAirDto.setStationName(stationName);
         realTimeAirService.saveRealTimeAirData(realTimeAirDto); //Service 클래스에서 saveRealTimeAirData 메소드 불러옴
