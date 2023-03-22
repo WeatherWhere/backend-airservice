@@ -1,7 +1,5 @@
 package com.weatherwhere.airservice.dto;
 
-import com.weatherwhere.airservice.domain.AirForecast;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.weatherwhere.airservice.domain.AirForecast;
+import com.weatherwhere.airservice.domain.AirForecastEntity;
 import com.weatherwhere.airservice.dto.AirForecastDto;
 import com.weatherwhere.airservice.repository.AirForecastRepository;
 
@@ -61,16 +61,16 @@ public class AirForecastServiceImpl extends AirForecastService{
         dtoList.addAll(dataToDto(four,(String)item.get("frcstFourDt")));
 
         //dto리스트를 entity리스트로 변환하는 부분
-        List<AirForecast> entityList = new ArrayList<>();
+        List<AirForecastEntity> entityList = new ArrayList<>();
         for (AirForecastDto dto : dtoList){
             // 엔티티에 해당 date에 값이 존재하는지 판별하기
-            AirForecast airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
+            AirForecastEntity airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
 
             if(airForecastEntity!=null){  // 해당 날짜가 존재할 경우 엔티티 업데이트
                 airForecastEntity.update(dto);
                 entityList.add(airForecastEntity);
             }else{// 해당 날짜 존재 안 할 경우 새로 생성
-                AirForecast entity=toEntity(dto);
+                AirForecastEntity entity=toEntity(dto);
                 entityList.add(entity);
             }
         }
@@ -113,13 +113,13 @@ public class AirForecastServiceImpl extends AirForecastService{
 
     // DTO -> Entity
     @Override
-    public AirForecast toEntity(AirForecastDto dto){
-        AirForecast airForecast= AirForecast.builder()
+    public AirForecastEntity toEntity(AirForecastDto dto){
+        AirForecastEntity airForecastEntity = AirForecastEntity.builder()
             .baseDate(dto.getBaseDate())
             .city(dto.getCity())
             .forecast(dto.getForecast())
             .reliability(dto.getReliability())
             .build();
-        return airForecast;
+        return airForecastEntity;
     }
 }

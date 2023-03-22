@@ -4,7 +4,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.simple.parser.ParseException;
-import com.weatherwhere.airservice.domain.AirForecast;
+import com.weatherwhere.airservice.domain.AirForecastEntity;
 import com.weatherwhere.airservice.dto.AirForecastDto;
 
 public class AirForecastService {
@@ -21,9 +21,9 @@ public class AirForecastService {
     }
 
     // DTO -> Entity
-    AirForecast toEntity(AirForecastDto dto){
-        AirForecast airForecast=new AirForecast();
-        return airForecast;
+    AirForecastEntity toEntity(AirForecastDto dto){
+        AirForecastEntity airForecastEntity =new AirForecastEntity();
+        return airForecastEntity;
     }
 }
 
