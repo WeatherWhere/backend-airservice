@@ -19,16 +19,4 @@ public class AirForecastDto {
     private String forecast;
     private String reliability;
 
-    // DTO -> Entity
-    public AirForecast toEntity(){
-        AirForecast airForecast= AirForecast.builder()
-            .baseDate(baseDate)
-            .city(city)
-            .forecast(forecast)
-            .reliability(reliability)
-            .build();
-        return airForecast;
-    }
-
-
 }

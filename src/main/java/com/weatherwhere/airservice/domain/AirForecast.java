@@ -21,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-public class AirForecast {
+public class AirForecast extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "air_forecast_id")
