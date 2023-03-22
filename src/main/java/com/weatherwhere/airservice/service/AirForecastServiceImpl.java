@@ -1,7 +1,10 @@
 package com.weatherwhere.airservice.service;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,22 +25,25 @@ public class AirForecastServiceImpl extends AirForecastService{
     @Autowired
     private AirForecastRepository airForecastRepository;
 
-    private final String BASE_URL="https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustWeekFrcstDspth";
-    private final String serviceKey="?ServiceKey="+System.getProperty("AIR_FORECAST_SERVICE_KEY_EN"); // 아직 환경변수 설정 전
-    private final String returnType="&returnType=json";
-    private final String numOfRows="&numOfRows=100";
-    private final String pageNo="pageNo=1";
-    private final String searchDate="&searchDate=";
-
     // 대기 주간예보 api 데이터 받아오는 메서드
     @Override
-    public List<AirForecastDto> getApiData() throws ParseException, URISyntaxException {
-        String url= BASE_URL+serviceKey+returnType+numOfRows+pageNo+searchDate+"2023-03-18"; // 시간은 어떻게 해줄지 나중에!
+    public List<AirForecastDto> getApiData(JSONObject date) throws
+        ParseException,
+        URISyntaxException,
+        UnsupportedEncodingException {
+        String BASE_URL="https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustWeekFrcstDspth";
+        String serviceKey="?ServiceKey="+System.getProperty("AIR_FORECAST_SERVICE_KEY_DE"); // 아직 환경변수 설정 전
+        String returnType="&returnType=json";
+        String numOfRows="&numOfRows=100";
+        String pageNo="pageNo=1";
+        String searchDate="&searchDate="+date.get("date");
+
+        String url= BASE_URL+serviceKey+returnType+numOfRows+pageNo+searchDate; // 시간은 어떻게 해줄지 나중에!
 
         RestTemplate restTemplate= new RestTemplate();
         URI endUrl=new URI(url);
         // RestTemplate으로 JSON data 받아오기
-        String result=  restTemplate.getForObject(endUrl,String.class);
+        String result=  restTemplate.getForObject(url,String.class);
 
         // JSON 파싱
         JSONParser jsonParser=new JSONParser();
