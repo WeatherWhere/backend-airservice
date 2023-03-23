@@ -1,4 +1,3 @@
-
 server:
   port: 8080
 
@@ -26,3 +25,5 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql: trace
+
+
