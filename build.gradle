@@ -4,6 +4,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.4'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'application'
 }
 
 group = 'com.weatherwhere'
@@ -13,8 +14,7 @@ sourceCompatibility = '17'
 repositories {
 	mavenCentral()
 }
-// 환경변수 처리 후 주석 풀기
-/*
+
 def env = new JsonSlurper().parse(new File('env.json'))
 
 // env 변수를 사용하여 데이터베이스 연결 정보를 가져올 수 있습니다.
@@ -31,8 +31,13 @@ run {
 	systemProperty 'DB_USERNAME', DB_USERNAME
 	systemProperty 'DB_PASSWORD', DB_PASSWORD
 }
-*/
+
 dependencies {
+
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+	implementation 'org.codehaus.groovy:groovy-json:2.5.14'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.0.4'
@@ -53,8 +58,16 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.4'
 
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+}
 
+tasks.named('test') {
+	useJUnitPlatform()
+
+	// database.name 프로퍼티를 ${DB_NAME}의 값으로 설정
+	systemProperty 'DB_NAME', DB_NAME
+	systemProperty 'DB_URL', DB_URL
+	systemProperty 'DB_USERNAME', DB_USERNAME
+	systemProperty 'DB_PASSWORD', DB_PASSWORD
 }
 
 configurations{
