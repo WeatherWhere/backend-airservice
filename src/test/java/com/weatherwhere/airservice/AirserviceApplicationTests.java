@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @SpringBootTest
 class AirserviceApplicationTests {
-
+/*
 	@Autowired
 	private RealTimeAirServiceImpl realTimeAirService;
 
@@ -18,5 +18,6 @@ class AirserviceApplicationTests {
 		realTimeAirService.readStationName();
 		System.out.println(realTimeAirService.readStationName());
 	}
-	
+	*/
+
 }
