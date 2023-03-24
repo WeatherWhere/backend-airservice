@@ -1,5 +1,7 @@
 package com.weatherwhere.airservice.domain;
 
+import java.time.LocalDate;
+
 import com.weatherwhere.airservice.dto.AirForecastDto;
 
 import jakarta.persistence.Column;
@@ -28,7 +30,7 @@ public class AirForecastEntity extends BaseEntity{
     private Long airForecastId;
 
     @Column(name="base_date")
-    private String baseDate;
+    private LocalDate baseDate;
     @Column(name="city")
     private String city;
 
