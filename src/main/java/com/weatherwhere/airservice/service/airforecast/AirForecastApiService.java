@@ -15,7 +15,6 @@ public interface AirForecastApiService {
     List<AirForecastDto> dataToDto(String data, LocalDate date);
 
     // DTO -> Entity
-
     default AirForecastEntity toEntity(AirForecastDto dto){
         AirForecastEntity airForecastEntity = AirForecastEntity.builder()
             .baseDate(dto.getBaseDate())
