@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "air_pollution_daily", schema = "air")
 @Builder
