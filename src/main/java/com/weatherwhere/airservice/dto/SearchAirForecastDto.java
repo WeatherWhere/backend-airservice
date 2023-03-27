@@ -3,6 +3,7 @@ package com.weatherwhere.airservice.dto;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.weatherwhere.airservice.domain.AirForecastId;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SearchAirForecastDto {
-    private String city;
-
-    private LocalDate baseDate;
+    private AirForecastId airForecastId;
 }

@@ -17,11 +17,9 @@ public interface GetAirForecastDataService {
     // Entity->DTO
     default AirForecastDto entityToDto(AirForecastEntity airForecastEntity){
         AirForecastDto airForecastDto=AirForecastDto.builder()
-            .airForecastId(airForecastEntity.getAirForecastId())
             .forecast(airForecastEntity.getForecast())
-            .city(airForecastEntity.getCity())
+            .airForecastId(airForecastEntity.getAirForecastId())
             .reliability(airForecastEntity.getReliability())
-            .baseDate(airForecastEntity.getBaseDate())
             .build();
         return airForecastDto;
     }
