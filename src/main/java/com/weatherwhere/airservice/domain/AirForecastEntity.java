@@ -32,11 +32,4 @@ public class AirForecastEntity extends BaseEntity{
     @Column(name="reliability")
     private String reliability;
 
-    /*
-    public void update(AirForecastDto dto){
-        this.airForecastId.getBaseDate()= dto.getBaseDate();
-        this.city= dto.getCity();
-        this.forecast= dto.getForecast();
-        this.reliability= dto.getReliability();
-    }*/
 }
