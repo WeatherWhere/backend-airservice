@@ -11,9 +11,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.weatherwhere.airservice.domain.AirForecastEntity;
+import com.weatherwhere.airservice.domain.AirForecastId;
 import com.weatherwhere.airservice.dto.AirForecastDto;
 import com.weatherwhere.airservice.repository.AirForecastRepository;
 
@@ -79,10 +81,15 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     }
 
     // db 저장
-    private List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
+    @Transactional
+    public List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
         List<AirForecastDto> resultDtoList=new ArrayList<>();
-        AirForecastEntity airForecastEntity=new AirForecastEntity();
+
         for (AirForecastDto dto : dtoList){
+            AirForecastEntity airForecastEntity=toEntity(dto);
+            airForecastRepository.save(airForecastEntity);
+            resultDtoList.add(toDto(airForecastEntity));
+            /*
             // 엔티티에 해당 date에 값이 존재하는지 판별하기
             airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
 
@@ -94,8 +101,9 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
                 AirForecastEntity entity=toEntity(dto);
                 // DB 저장
                 airForecastRepository.save(entity);
-            }
-            resultDtoList.add(toDto(airForecastEntity));
+            }*/
+
+            //resultDtoList.add(toDto(airForecastEntity));
         }
         return resultDtoList;
     }
@@ -140,13 +148,14 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         // 해당 날짜에 cirt[i]: "서울 : 높음" 를 가공해서 dtoList에 넣는다.
         for(int i=0; i<city.length-2; i++){//cirt[i]: "서울 : 높음"
             String nowData[]=city[i].split(" : ");
+            AirForecastId airForecastId=new AirForecastId();
+            airForecastId.setCity(nowData[0].trim());
+            airForecastId.setBaseDate(date);
             dto=AirForecastDto.builder()
-                .baseDate(date)
-                .city(nowData[0].trim())
+                .airForecastId(airForecastId)
                 .forecast(nowData[1].trim())
                 .reliability(reliability)
                 .build();
-
             dtoList.add(dto);
         }
         return dtoList;

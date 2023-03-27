@@ -13,8 +13,7 @@ public interface AirForecastApiService {
     // DTO -> Entity
     default AirForecastEntity toEntity(AirForecastDto dto){
         AirForecastEntity airForecastEntity = AirForecastEntity.builder()
-            .baseDate(dto.getBaseDate())
-            .city(dto.getCity())
+            .airForecastId(dto.getAirForecastId())
             .forecast(dto.getForecast())
             .reliability(dto.getReliability())
             .build();
@@ -23,11 +22,9 @@ public interface AirForecastApiService {
 
     default AirForecastDto toDto(AirForecastEntity airForecastEntity){
         AirForecastDto airForecastDto= AirForecastDto.builder()
-            .airForecastId(airForecastEntity.getAirForecastId())
             .forecast(airForecastEntity.getForecast())
-            .city(airForecastEntity.getCity())
+            .airForecastId(airForecastEntity.getAirForecastId())
             .reliability(airForecastEntity.getReliability())
-            .baseDate(airForecastEntity.getBaseDate())
             .build();
         return airForecastDto;
     }

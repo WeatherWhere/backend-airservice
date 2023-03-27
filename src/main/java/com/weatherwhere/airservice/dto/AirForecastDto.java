@@ -2,6 +2,8 @@ package com.weatherwhere.airservice.dto;
 
 import java.time.LocalDate;
 
+import com.weatherwhere.airservice.domain.AirForecastId;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class AirForecastDto {
-    private Long airForecastId;
-    private LocalDate baseDate;
-    private String city;
+    private AirForecastId airForecastId;
     private String forecast;
     private String reliability;
-
 }
