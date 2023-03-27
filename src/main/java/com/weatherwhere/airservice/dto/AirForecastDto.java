@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class AirForecastDto {
+    private Long airForecastId;
     private LocalDate baseDate;
     private String city;
     private String forecast;

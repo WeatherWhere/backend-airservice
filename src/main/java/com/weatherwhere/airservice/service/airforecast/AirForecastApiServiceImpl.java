@@ -1,10 +1,9 @@
 package com.weatherwhere.airservice.service.airforecast;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -34,10 +33,9 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         System.out.println(parseDate);
         return parseDate;
     }
-    // 대기 주간예보 api 데이터 받아오는 메서드
-    @Override
-    public List<AirForecastDto> getApiData(JSONObject date) throws
-        ParseException, java.text.ParseException {
+
+    // 공공데이터 api url
+    private String makeUrl(JSONObject date){
         String BASE_URL="https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustWeekFrcstDspth";
         String serviceKey="?ServiceKey="+System.getProperty("AIR_FORECAST_SERVICE_KEY_DE"); // 아직 환경변수 설정 전
         String returnType="&returnType=json";
@@ -46,12 +44,11 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         String searchDate="&searchDate="+date.get("date");
 
         String url= BASE_URL+serviceKey+returnType+numOfRows+pageNo+searchDate; // 시간은 어떻게 해줄지 나중에!
+        return url;
+    }
 
-        RestTemplate restTemplate= new RestTemplate();
-        // RestTemplate으로 JSON data 받아오기
-        String result=  restTemplate.getForObject(url,String.class);
-
-        // JSON 파싱
+    // JSON 파싱해서 4일 정보 저장
+    private HashMap<LocalDate,String> jsonParsing(String result) throws ParseException, java.text.ParseException {
         JSONParser jsonParser=new JSONParser();
         JSONObject jsonObject=(JSONObject)jsonParser.parse(result);
         JSONObject response=(JSONObject)jsonObject.get("response");
@@ -66,18 +63,28 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         String thirdData=(String)item.get("frcstThreeCn");
         String fourthData=(String)item.get("frcstFourCn");
 
-        List<AirForecastDto> dtoList=new ArrayList<>();
-        // Json에서 String으로 받은 날짜-> LocalDate로 변환해서 넣음
-        dtoList.addAll(dataToDto(firstData,StringToLocalDate((String)item.get("frcstOneDt"))));
-        dtoList.addAll(dataToDto(secondData,StringToLocalDate((String)item.get("frcstTwoDt"))));
-        dtoList.addAll(dataToDto(thirdData,StringToLocalDate((String)item.get("frcstThreeDt"))));
-        dtoList.addAll(dataToDto(fourthData,StringToLocalDate((String)item.get("frcstFourDt"))));
+        // 4일 날짜
+        LocalDate firstDate=StringToLocalDate((String)item.get("frcstOneDt"));
+        LocalDate secondDate=StringToLocalDate((String)item.get("frcstTwoDt"));
+        LocalDate thirdDate=StringToLocalDate((String)item.get("frcstThreeDt"));
+        LocalDate fourthDate=StringToLocalDate((String)item.get("frcstFourDt"));
 
-        //dto리스트를 entity리스트로 변환하는 부분
+        HashMap<LocalDate,String> forecastData=new HashMap<>(); // date와 정보
+        forecastData.put(firstDate,firstData);
+        forecastData.put(secondDate,secondData);
+        forecastData.put(thirdDate,thirdData);
+        forecastData.put(fourthDate,fourthData);
 
+        return forecastData;
+    }
+
+    // db 저장
+    private List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
+        List<AirForecastDto> resultDtoList=new ArrayList<>();
+        AirForecastEntity airForecastEntity=new AirForecastEntity();
         for (AirForecastDto dto : dtoList){
             // 엔티티에 해당 date에 값이 존재하는지 판별하기
-            AirForecastEntity airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
+            airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
 
             if(airForecastEntity != null){  // 해당 날짜가 존재할 경우 엔티티 업데이트
                 airForecastEntity.update(dto);
@@ -88,15 +95,36 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
                 // DB 저장
                 airForecastRepository.save(entity);
             }
+            resultDtoList.add(toDto(airForecastEntity));
         }
-        // db에 저장
-       // airForecastRepository.saveAll(entityList);
+        return resultDtoList;
+    }
+
+
+    // 대기 주간예보 api 데이터 받아오기 & db 저장
+    @Override
+    public List<AirForecastDto> getApiData(JSONObject date) throws java.text.ParseException, ParseException {
+
+        RestTemplate restTemplate= new RestTemplate();
+
+        // RestTemplate으로 JSON data 받아오기
+        String result=  restTemplate.getForObject(makeUrl(date),String.class);
+
+        // Json 파싱해서 4일 data 저장
+        HashMap<LocalDate,String> data=jsonParsing(result);
+
+        List<AirForecastDto> dtoList=new ArrayList<>();
+        // 4일 데이터 가공해서 db에 넣기
+        for(LocalDate key: data.keySet()){ // key: 날짜, value: 가공 전 데이터
+            List<AirForecastDto> dataList=dataToDto(data.get(key), key);
+            dtoList.addAll(saveDb(dataList));
+        }
+
         return dtoList;
     }
 
     // String 가공하여 Dto에 넣어주는 메서드
-    @Override
-    public List<AirForecastDto> dataToDto(String data, LocalDate date){
+    private List<AirForecastDto> dataToDto(String data, LocalDate date){
         /*
          * "서울 : 높음, 인천 : 높음, 경기북부 : 높음, 경기남부 : 높음, 강원영서 : 높음, 강원영동 : 낮음
          * , 대전 : 낮음, 세종 : 낮음, 충남 : 높음, 충북 : 높음, 광주 : 낮음, 전북 : 낮음
