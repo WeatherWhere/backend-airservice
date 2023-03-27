@@ -35,7 +35,8 @@ public class AirForecastController {
 
     // 7일의 대기 주간예보 데이터 가져오기!
     @GetMapping(value = "/data")
-    public List<AirForecastDto> getSevenDaysAirForecastData(@RequestBody SearchAirForecastDto searchAirForecastDto) {
+    public List<AirForecastDto> getSevenDaysAirForecastData(@RequestBody SearchAirForecastDto searchAirForecastDto) throws
+        Exception {
         return getAirForecastDataService.getSevenDaysDataOfLocation(searchAirForecastDto);
     }
 }
