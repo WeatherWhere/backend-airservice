@@ -89,21 +89,6 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
             AirForecastEntity airForecastEntity=toEntity(dto);
             airForecastRepository.save(airForecastEntity);
             resultDtoList.add(toDto(airForecastEntity));
-            /*
-            // 엔티티에 해당 date에 값이 존재하는지 판별하기
-            airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
-
-            if(airForecastEntity != null){  // 해당 날짜가 존재할 경우 엔티티 업데이트
-                airForecastEntity.update(dto);
-                // DB 저장
-                airForecastRepository.save(airForecastEntity);
-            }else{// 해당 날짜 존재 안 할 경우 새로 생성
-                AirForecastEntity entity=toEntity(dto);
-                // DB 저장
-                airForecastRepository.save(entity);
-            }*/
-
-            //resultDtoList.add(toDto(airForecastEntity));
         }
         return resultDtoList;
     }
