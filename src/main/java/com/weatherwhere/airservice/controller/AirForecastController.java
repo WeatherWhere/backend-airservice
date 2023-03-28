@@ -29,7 +29,6 @@ public class AirForecastController {
     @GetMapping(value = "/api")
     public List<AirForecastDto> getAirForecastApiData(@RequestBody JSONObject date) throws
         ParseException, java.text.ParseException {
-        System.out.println(date.get("date"));
         return airForecastService.getApiData(date);
     }
 

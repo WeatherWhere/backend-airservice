@@ -21,9 +21,11 @@ import com.weatherwhere.airservice.repository.AirForecastRepository;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AirForecastApiServiceImpl implements AirForecastApiService {
 
     private final AirForecastRepository airForecastRepository;
@@ -32,7 +34,6 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     private LocalDate StringToLocalDate(String stringDate) throws java.text.ParseException {
         // DateTimeFormatter.ISO_DATE는 "yyyy-mm-dd"를 상수로 선언한 것
         LocalDate parseDate=LocalDate.parse(stringDate, DateTimeFormatter.ISO_DATE);
-        System.out.println(parseDate);
         return parseDate;
     }
 
@@ -89,21 +90,6 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
             AirForecastEntity airForecastEntity=toEntity(dto);
             airForecastRepository.save(airForecastEntity);
             resultDtoList.add(toDto(airForecastEntity));
-            /*
-            // 엔티티에 해당 date에 값이 존재하는지 판별하기
-            airForecastEntity=airForecastRepository.findByBaseDateAndCity(dto.getBaseDate(),dto.getCity());
-
-            if(airForecastEntity != null){  // 해당 날짜가 존재할 경우 엔티티 업데이트
-                airForecastEntity.update(dto);
-                // DB 저장
-                airForecastRepository.save(airForecastEntity);
-            }else{// 해당 날짜 존재 안 할 경우 새로 생성
-                AirForecastEntity entity=toEntity(dto);
-                // DB 저장
-                airForecastRepository.save(entity);
-            }*/
-
-            //resultDtoList.add(toDto(airForecastEntity));
         }
         return resultDtoList;
     }
@@ -112,20 +98,26 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     // 대기 주간예보 api 데이터 받아오기 & db 저장
     @Override
     public List<AirForecastDto> getApiData(JSONObject date) throws java.text.ParseException, ParseException {
+        List<AirForecastDto> dtoList=new ArrayList<>();
 
         RestTemplate restTemplate= new RestTemplate();
+        try{
+            // RestTemplate으로 JSON data 받아오기
+            String result=  restTemplate.getForObject(makeUrl(date),String.class);
 
-        // RestTemplate으로 JSON data 받아오기
-        String result=  restTemplate.getForObject(makeUrl(date),String.class);
+            // Json 파싱해서 4일 data 저장
+            HashMap<LocalDate,String> data=jsonParsing(result);
 
-        // Json 파싱해서 4일 data 저장
-        HashMap<LocalDate,String> data=jsonParsing(result);
 
-        List<AirForecastDto> dtoList=new ArrayList<>();
-        // 4일 데이터 가공해서 db에 넣기
-        for(LocalDate key: data.keySet()){ // key: 날짜, value: 가공 전 데이터
-            List<AirForecastDto> dataList=dataToDto(data.get(key), key);
-            dtoList.addAll(saveDb(dataList));
+            // 4일 데이터 가공해서 db에 넣기
+            for(LocalDate key: data.keySet()){ // key: 날짜, value: 가공 전 데이터
+                List<AirForecastDto> dataList=dataToDto(data.get(key), key);
+                dtoList.addAll(saveDb(dataList));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+
         }
 
         return dtoList;
@@ -152,7 +144,8 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
             airForecastId.setCity(nowData[0].trim());
             airForecastId.setBaseDate(date);
             dto=AirForecastDto.builder()
-                .airForecastId(airForecastId)
+                .baseDate(airForecastId.getBaseDate())
+                .city(airForecastId.getCity())
                 .forecast(nowData[1].trim())
                 .reliability(reliability)
                 .build();

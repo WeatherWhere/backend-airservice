@@ -4,6 +4,7 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import com.weatherwhere.airservice.domain.AirForecastEntity;
+import com.weatherwhere.airservice.domain.AirForecastId;
 import com.weatherwhere.airservice.dto.AirForecastDto;
 
 public interface AirForecastApiService {
@@ -12,8 +13,12 @@ public interface AirForecastApiService {
 
     // DTO -> Entity
     default AirForecastEntity toEntity(AirForecastDto dto){
+        AirForecastId airForecastId=AirForecastId.builder()
+            .baseDate(dto.getBaseDate())
+            .city(dto.getCity())
+            .build();
         AirForecastEntity airForecastEntity = AirForecastEntity.builder()
-            .airForecastId(dto.getAirForecastId())
+            .airForecastId(airForecastId)
             .forecast(dto.getForecast())
             .reliability(dto.getReliability())
             .build();
@@ -23,7 +28,8 @@ public interface AirForecastApiService {
     default AirForecastDto toDto(AirForecastEntity airForecastEntity){
         AirForecastDto airForecastDto= AirForecastDto.builder()
             .forecast(airForecastEntity.getForecast())
-            .airForecastId(airForecastEntity.getAirForecastId())
+            .baseDate(airForecastEntity.getAirForecastId().getBaseDate())
+            .city(airForecastEntity.getAirForecastId().getCity())
             .reliability(airForecastEntity.getReliability())
             .build();
         return airForecastDto;
