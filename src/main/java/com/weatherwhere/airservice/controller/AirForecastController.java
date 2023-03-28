@@ -36,6 +36,7 @@ public class AirForecastController {
     @GetMapping(value = "/data")
     public List<AirForecastDto> getSevenDaysAirForecastData(@RequestBody SearchAirForecastDto searchAirForecastDto) throws
         Exception {
+
         return getAirForecastDataService.getSevenDaysDataOfLocation(searchAirForecastDto);
     }
 }
