@@ -15,5 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SearchAirForecastDto {
-    private AirForecastId airForecastId;
+
+    private LocalDate baseDate;
+    private String city;
+
 }
