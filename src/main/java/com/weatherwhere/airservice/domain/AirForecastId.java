@@ -1,24 +1,24 @@
-package com.weatherwhere.airservice.dto;
+package com.weatherwhere.airservice.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-import com.weatherwhere.airservice.domain.AirForecastId;
-
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
-public class AirForecastDto {
+@NoArgsConstructor
+@AllArgsConstructor
+@Embeddable
+@Builder
+public class AirForecastId implements Serializable {
+    @Column(name="base_date")
     private LocalDate baseDate;
+
+    @Column(name="city")
     private String city;
-    private String forecast;
-    private String reliability;
 }
