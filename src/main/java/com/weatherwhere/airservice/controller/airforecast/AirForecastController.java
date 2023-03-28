@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.controller;
+package com.weatherwhere.airservice.controller.airforecast;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.weatherwhere.airservice.dto.AirForecastDto;
-import com.weatherwhere.airservice.dto.SearchAirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
 import com.weatherwhere.airservice.service.airforecast.AirForecastApiServiceImpl;
 import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataServiceImpl;
 

@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.weatherwhere.airservice.domain.AirForecastEntity;
-import com.weatherwhere.airservice.domain.AirForecastId;
-import com.weatherwhere.airservice.dto.AirForecastDto;
-import com.weatherwhere.airservice.repository.AirForecastRepository;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
+import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
 
 
 import lombok.RequiredArgsConstructor;

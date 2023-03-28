@@ -2,11 +2,11 @@ package com.weatherwhere.airservice.service.airforecast;
 
 import java.time.LocalDate;
 import java.util.List;
-import org.json.simple.JSONObject;
+
 import org.json.simple.parser.ParseException;
-import com.weatherwhere.airservice.domain.AirForecastEntity;
-import com.weatherwhere.airservice.domain.AirForecastId;
-import com.weatherwhere.airservice.dto.AirForecastDto;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
 
 public interface AirForecastApiService {
     // 대기 주간예보 api 데이터 받아오는 메서드
