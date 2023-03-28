@@ -1,6 +1,5 @@
 package com.weatherwhere.airservice.service;
 
-
 import com.weatherwhere.airservice.domain.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.RealTimeAirDto;
 import com.weatherwhere.airservice.repository.RealTimeAirRepository;
@@ -19,7 +18,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-
 
 @Service
 @Log4j2
