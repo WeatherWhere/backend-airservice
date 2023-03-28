@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,8 +18,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -64,14 +61,14 @@ public class RealTimeAirServiceImpl implements RealTimeService {
                 "&pageNo=1" +
                 "&numOfRows=1" +
                 "&returnType=json" +
-                "&serviceKey=" + System.getProperty("AIR_FORECAST_SERVICE_KEY_DE") +
+                "&serviceKey=" + "LKiVUvMq5P2zZ88FZoOq/h0k9y98k2pEdRcJSheoYPwZxYlcaGkQugApuMndBS0dqRg1QeziMPwW9rbVvRIcRA==" +
+                //System.getProperty("AIR_FORECAST_SERVICE_KEY_DE") +
                 "&ver=1.0";
         String jsonString = restTemplate.getForObject(apiUrl, String.class);
         try {
             Object result = JsonParser(jsonString);
             return result;
         } catch (IndexOutOfBoundsException e) {
-            //IndexOutOfBoundsException 이 뜨는 이유는 측정소에서의 실시간 미세먼지 정보가 없음
             System.out.println("IndexE:" + stationName);
         }
         return "성공";
@@ -82,36 +79,36 @@ public class RealTimeAirServiceImpl implements RealTimeService {
     @Transactional
     public Object saveRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException {
         Object realTimeAirData = getRealTimeAirData(stationName);
-        RealTimeAirDto realTimeAirDto = null;
         try {
-            //RealTimeAirDto 객체 생성
-            realTimeAirDto = new RealTimeAirDto();
-            realTimeAirDto.setStationName(stationName);
-            realTimeAirDto.setDataTime((String) ((JSONObject) realTimeAirData).get("dataTime"));
-            realTimeAirDto.setSo2Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("so2Value")));
-            realTimeAirDto.setCoValue(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("coValue")));
-            realTimeAirDto.setO3Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("o3Value")));
-            realTimeAirDto.setNo2Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("no2Value")));
-            realTimeAirDto.setPm10Value(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm10Value")));
-            realTimeAirDto.setPm25Value(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm25Value")));
-            realTimeAirDto.setKhaiValue(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("khaiValue")));
-            realTimeAirDto.setSo2Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("so2Grade")));
-            realTimeAirDto.setCoGrade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("coGrade")));
-            realTimeAirDto.setO3Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("o3Grade")));
-            realTimeAirDto.setNo2Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("no2Grade")));
-            realTimeAirDto.setPm10Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm10Grade")));
-            realTimeAirDto.setPm25Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm25Grade")));
-            realTimeAirDto.setKhaiGrade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("khaiGrade")));
-        } catch (ClassCastException e){
-            //ClassCastException 이 뜨는 이유는 측정소에서의 실시간 미세먼지 정보가 없음
+            RealTimeAirDto realTimeAirDto = RealTimeAirDto.builder()
+                    .stationName(stationName)
+                    .dataTime((String) ((JSONObject) realTimeAirData).get("dataTime"))
+                    .so2Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("so2Value")))
+                    .coValue(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("coValue")))
+                    .o3Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("o3Value")))
+                    .no2Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("no2Value")))
+                    .pm10Value(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm10Value")))
+                    .pm25Value(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm25Value")))
+                    .khaiValue(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("khaiValue")))
+                    .so2Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("so2Grade")))
+                    .coGrade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("coGrade")))
+                    .o3Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("o3Grade")))
+                    .no2Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("no2Grade")))
+                    .pm10Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm10Grade")))
+                    .pm25Grade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("pm25Grade")))
+                    .khaiGrade(Integer.parseInt((String) ((JSONObject) realTimeAirData).get("khaiGrade")))
+                    .build();
+
+            //RealTimeAirEntity 객체 생성
+            RealTimeAirEntity realTimeAirEntity = ToEntity(realTimeAirDto);
+            realTimeAirRepository.save(realTimeAirEntity);
+
+            return ToDto(realTimeAirEntity);
+        } catch (ClassCastException e) {
             System.out.println("ClassE:" + stationName);
         }
 
-        //RealTimeAirEntity 객체 생성
-        RealTimeAirEntity realTimeAirEntity = ToEntity(realTimeAirDto);
-        realTimeAirRepository.save(realTimeAirEntity);
-
-        return ToDto(realTimeAirEntity);
+        return "성공";
     }
 
     //DB에서 측정소 명을 가져와서 변수로 사용해 데이터를 갱신
@@ -122,8 +119,13 @@ public class RealTimeAirServiceImpl implements RealTimeService {
         List<String> stationNames = realTimeAirRepository.getStationNames();
 
         // 측정소 이름별로 데이터 저장하기
+        //중동(유해+중금속)은 데이터가 안 받아와져 그 다음으로 가까운 다른 곳의 데이터를 넣어줌
         for (String stationName : stationNames) {
-            saveRealTimeAirData(stationName);
+            if (stationName.equals("중동(유해+중금속)")) {
+                saveRealTimeAirData("고산리");
+            } else {
+                saveRealTimeAirData(stationName);
+            }
         }
 
         return "성공";
@@ -131,8 +133,7 @@ public class RealTimeAirServiceImpl implements RealTimeService {
 
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드
-    @Autowired
-    private StationNameRepository stationNameRepository;
+    private final StationNameRepository stationNameRepository;
 
     public String readStationName() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("station_list.csv"));
