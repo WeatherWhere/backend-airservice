@@ -2,23 +2,21 @@ package com.weatherwhere.airservice.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.weatherwhere.airservice.domain.AirForecastId;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
-public class AirForecastDto {
+public class SearchAirForecastDto {
+
     private LocalDate baseDate;
     private String city;
-    private String forecast;
-    private String reliability;
+
 }

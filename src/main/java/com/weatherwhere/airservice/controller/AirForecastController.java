@@ -1,8 +1,5 @@
 package com.weatherwhere.airservice.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -13,24 +10,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherwhere.airservice.dto.AirForecastDto;
-import com.weatherwhere.airservice.service.AirForecastServiceImpl;
+import com.weatherwhere.airservice.dto.SearchAirForecastDto;
+import com.weatherwhere.airservice.service.airforecast.AirForecastApiServiceImpl;
+import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataServiceImpl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("air/forecast")
 @Slf4j
+@RequiredArgsConstructor
 public class AirForecastController {
-    private final AirForecastServiceImpl airForecastService;
+    private final AirForecastApiServiceImpl airForecastService;
 
-    public AirForecastController(AirForecastServiceImpl airForecastService){
-        this.airForecastService=airForecastService;
-    }
-
+    private final GetAirForecastDataServiceImpl getAirForecastDataService;
+    // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
     public List<AirForecastDto> getAirForecastApiData(@RequestBody JSONObject date) throws
-        ParseException, URISyntaxException, UnsupportedEncodingException {
-        System.out.println(date.get("date"));
+        ParseException, java.text.ParseException {
         return airForecastService.getApiData(date);
+    }
+
+    // 7일의 대기 주간예보 데이터 가져오기!
+    @GetMapping(value = "/data")
+    public List<AirForecastDto> getSevenDaysAirForecastData(@RequestBody SearchAirForecastDto searchAirForecastDto) throws
+        Exception {
+
+        return getAirForecastDataService.getSevenDaysDataOfLocation(searchAirForecastDto);
     }
 }
