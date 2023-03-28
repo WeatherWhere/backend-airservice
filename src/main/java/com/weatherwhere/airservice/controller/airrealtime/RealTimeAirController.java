@@ -24,9 +24,9 @@ public class RealTimeAirController {
     }
 
     @GetMapping("/data")
-    public ResponseEntity<RealTimeAirEntity> getDBData(@RequestParam("stationName") String stationName) {
+    public ResponseEntity<RealTimeAirEntity> getRealTimeDBData(@RequestParam("stationName") String stationName) {
         try {
-            RealTimeAirEntity data = realTimeAirService.getDBData(stationName);
+            RealTimeAirEntity data = realTimeAirService.getRealTimeDBData(stationName);
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

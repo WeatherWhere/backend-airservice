@@ -12,7 +12,7 @@ public interface RealTimeService {
 
     Object updateRealtimeAirDate() throws ParseException, org.json.simple.parser.ParseException;
 
-    Object getDBData(String stationName);
+    Object getRealTimeDBData(String stationName);
 
     //Dto -> Entity 메서드
     default RealTimeAirEntity ToEntity(RealTimeAirDto dto) {

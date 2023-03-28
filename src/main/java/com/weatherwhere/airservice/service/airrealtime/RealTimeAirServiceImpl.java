@@ -131,9 +131,10 @@ public class RealTimeAirServiceImpl implements RealTimeService {
         return "성공";
     }
 
+    //DB에서 데이터 가져오기
     @Override
     @Transactional
-    public RealTimeAirEntity getDBData(String stationName){
+    public RealTimeAirEntity getRealTimeDBData(String stationName){
         return realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
     }
 
