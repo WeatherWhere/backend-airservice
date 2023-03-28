@@ -3,6 +3,8 @@ package com.weatherwhere.airservice.service.airforecast;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,6 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     // 해당 위치 7일 대기오염 주간예보 DB 가져오기
     @Override
     @Transactional
-
     public List<AirForecastDto> getSevenDaysDataOfLocation(SearchAirForecastDto searchAirForecastDto) throws Exception {
         AirForecastId airForecastId=new AirForecastId();
         airForecastId.setBaseDate(searchAirForecastDto.getBaseDate());
@@ -36,9 +37,9 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
             searchId.setCity(airForecastId.getCity());
 
 
-            // db에서 해당 날짜가 없을 때 null 값으로 넣어서 예외처리해줌!
+            // db에서 해당 날짜가 없을 때  예외처리!
             AirForecastEntity airForecastEntity=airForecastRepository.findByAirForecastId(searchId)
-                .orElseGet(AirForecastEntity::new);
+                .orElseThrow(() -> new NoSuchElementException());
             sevenDaysData.add(entityToDto(airForecastEntity));
 
         }

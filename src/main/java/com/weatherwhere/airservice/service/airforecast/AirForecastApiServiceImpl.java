@@ -38,13 +38,13 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     }
 
     // 공공데이터 api url
-    private String makeUrl(JSONObject date){
+    private String makeUrl(LocalDate date){
         String BASE_URL="https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustWeekFrcstDspth";
         String serviceKey="?ServiceKey="+System.getProperty("AIR_FORECAST_SERVICE_KEY_DE"); // 아직 환경변수 설정 전
         String returnType="&returnType=json";
         String numOfRows="&numOfRows=100";
         String pageNo="pageNo=1";
-        String searchDate="&searchDate="+date.get("date");
+        String searchDate="&searchDate="+date;
 
         String url= BASE_URL+serviceKey+returnType+numOfRows+pageNo+searchDate; // 시간은 어떻게 해줄지 나중에!
         return url;
@@ -97,7 +97,7 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
 
     // 대기 주간예보 api 데이터 받아오기 & db 저장
     @Override
-    public List<AirForecastDto> getApiData(JSONObject date) throws java.text.ParseException, ParseException {
+    public List<AirForecastDto> getApiData(LocalDate date) throws java.text.ParseException, ParseException {
         List<AirForecastDto> dtoList=new ArrayList<>();
 
         RestTemplate restTemplate= new RestTemplate();
