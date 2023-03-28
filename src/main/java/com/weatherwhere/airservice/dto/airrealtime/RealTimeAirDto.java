@@ -1,6 +1,5 @@
-package com.weatherwhere.airservice.dto;
+package com.weatherwhere.airservice.dto.airrealtime;
 
-import com.weatherwhere.airservice.domain.RealTimeAirEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
