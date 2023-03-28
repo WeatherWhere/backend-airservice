@@ -25,8 +25,8 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     @Transactional
     public List<AirForecastDto> getSevenDaysDataOfLocation(SearchAirForecastDto searchAirForecastDto) throws Exception {
         AirForecastId airForecastId=new AirForecastId();
-        airForecastId.setBaseDate(searchAirForecastDto.getAirForecastId().getBaseDate());
-        airForecastId.setCity(searchAirForecastDto.getAirForecastId().getCity());
+        airForecastId.setBaseDate(searchAirForecastDto.getBaseDate());
+        airForecastId.setCity(searchAirForecastDto.getCity());
 
         List<AirForecastDto> sevenDaysData=new ArrayList<>();
         for(int i=0; i<7; i++){

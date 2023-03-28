@@ -1,7 +1,6 @@
 package com.weatherwhere.airservice.service.airforecast;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.List;
 
 import com.weatherwhere.airservice.domain.AirForecastEntity;
@@ -18,7 +17,8 @@ public interface GetAirForecastDataService {
     default AirForecastDto entityToDto(AirForecastEntity airForecastEntity){
         AirForecastDto airForecastDto=AirForecastDto.builder()
             .forecast(airForecastEntity.getForecast())
-            .airForecastId(airForecastEntity.getAirForecastId())
+            .baseDate(airForecastEntity.getAirForecastId().getBaseDate())
+            .city(airForecastEntity.getAirForecastId().getCity())
             .reliability(airForecastEntity.getReliability())
             .build();
         return airForecastDto;
