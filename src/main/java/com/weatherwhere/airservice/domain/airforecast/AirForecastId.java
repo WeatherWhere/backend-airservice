@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.domain;
+package com.weatherwhere.airservice.domain.airforecast;
 
 import java.io.Serializable;
 import java.time.LocalDate;

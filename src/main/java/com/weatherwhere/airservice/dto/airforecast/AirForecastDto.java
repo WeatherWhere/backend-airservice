@@ -1,10 +1,7 @@
-package com.weatherwhere.airservice.dto;
+package com.weatherwhere.airservice.dto.airforecast;
 
 import java.time.LocalDate;
 
-import com.weatherwhere.airservice.domain.AirForecastId;
-
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

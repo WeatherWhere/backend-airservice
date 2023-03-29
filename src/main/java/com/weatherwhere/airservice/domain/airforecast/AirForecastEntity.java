@@ -1,13 +1,10 @@
-package com.weatherwhere.airservice.domain;
+package com.weatherwhere.airservice.domain.airforecast;
 
-import java.time.LocalDate;
-
-import com.weatherwhere.airservice.dto.AirForecastDto;
+import com.weatherwhere.airservice.domain.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-public class AirForecastEntity extends BaseEntity{
+public class AirForecastEntity extends BaseEntity {
 
     @EmbeddedId
     private AirForecastId airForecastId;
