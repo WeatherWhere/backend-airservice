@@ -26,7 +26,7 @@ public class RealTimeAirController {
         return realTimeAirService.updateRealtimeAirDate();
     }
 
-    // 경도 x, y 받아서 가까운 측정소 검색 후 그 측정소의 정보를 DB에서 가져와 보여줌R
+    // 경도 x, y 받아서 가까운 측정소 검색 후 그 측정소의 정보를 DB에서 가져와 보여줌
     @GetMapping("/data")
     public ResponseEntity<RealTimeAirEntity> getRealTimeDBData(@RequestParam Double x, Double y) {
         try {

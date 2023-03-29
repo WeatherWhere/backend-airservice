@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -78,10 +80,11 @@ public class RealTimeAirServiceImpl implements RealTimeService {
     @Transactional
     public Object saveRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException {
         Object realTimeAirData = getRealTimeAirData(stationName);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         try {
             RealTimeAirDto realTimeAirDto = RealTimeAirDto.builder()
                     .stationName(stationName)
-                    .dataTime((String) ((JSONObject) realTimeAirData).get("dataTime"))
+                    .dataTime(LocalDateTime.parse((String) ((JSONObject) realTimeAirData).get("dataTime"), dateFormatter))
                     .so2Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("so2Value")))
                     .coValue(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("coValue")))
                     .o3Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("o3Value")))
@@ -118,15 +121,9 @@ public class RealTimeAirServiceImpl implements RealTimeService {
         List<String> stationNames = realTimeAirRepository.getStationNames();
 
         // 측정소 이름별로 데이터 저장하기
-        //중동(유해+중금속)은 데이터가 안 받아와져 그 다음으로 가까운 다른 곳의 데이터를 넣어줌
         for (String stationName : stationNames) {
-            if (stationName.equals("중동(유해+중금속)")) {
-                saveRealTimeAirData("고산리");
-            } else {
-                saveRealTimeAirData(stationName);
-            }
+            saveRealTimeAirData(stationName);
         }
-
         return "성공";
     }
 
