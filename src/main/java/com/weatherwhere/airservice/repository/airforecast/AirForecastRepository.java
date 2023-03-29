@@ -1,14 +1,12 @@
-package com.weatherwhere.airservice.repository;
-
-import java.time.LocalDate;
+package com.weatherwhere.airservice.repository.airforecast;
 
 import java.util.Optional;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.weatherwhere.airservice.domain.AirForecastEntity;
-import com.weatherwhere.airservice.domain.AirForecastId;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
 
 public interface AirForecastRepository extends JpaRepository<AirForecastEntity, AirForecastId> {
 

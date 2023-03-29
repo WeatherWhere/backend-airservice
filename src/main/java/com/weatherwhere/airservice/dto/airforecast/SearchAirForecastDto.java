@@ -1,9 +1,6 @@
-package com.weatherwhere.airservice.dto;
+package com.weatherwhere.airservice.dto.airforecast;
 
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.weatherwhere.airservice.domain.AirForecastId;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

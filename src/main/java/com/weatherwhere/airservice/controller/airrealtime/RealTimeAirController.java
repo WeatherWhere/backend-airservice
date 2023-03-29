@@ -1,6 +1,7 @@
 package com.weatherwhere.airservice.controller.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
 import com.weatherwhere.airservice.service.airrealtime.RealTimeAirServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.text.ParseException;
 @RequestMapping("air/realtime")
 public class RealTimeAirController {
     private final RealTimeAirServiceImpl realTimeAirService;
+    private  final GetTmXYAndStationServiceImpl getTmXYAndStationService;
 
     @GetMapping("/api")
     public Object updateRealtimeAirDate() throws ParseException, org.json.simple.parser.ParseException {
@@ -33,5 +35,11 @@ public class RealTimeAirController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // 경도 x, 위도 y로 측정소명 받기
+    @GetMapping("/station")
+    public String getStatinName(@RequestParam Double x, Double y) throws org.json.simple.parser.ParseException {
+        return getTmXYAndStationService.getStationName(x,y);
     }
 }

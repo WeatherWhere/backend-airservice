@@ -1,11 +1,10 @@
 package com.weatherwhere.airservice.service.airforecast;
 
-import java.text.ParseException;
 import java.util.List;
 
-import com.weatherwhere.airservice.domain.AirForecastEntity;
-import com.weatherwhere.airservice.dto.AirForecastDto;
-import com.weatherwhere.airservice.dto.SearchAirForecastDto;
+import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
 
 public interface GetAirForecastDataService {
 
