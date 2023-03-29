@@ -1,6 +1,7 @@
-package com.weatherwhere.airservice.domain;
+package com.weatherwhere.airservice.domain.airrealtime;
 
 
+import com.weatherwhere.airservice.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

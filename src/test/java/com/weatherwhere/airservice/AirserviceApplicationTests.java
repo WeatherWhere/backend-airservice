@@ -1,6 +1,6 @@
 package com.weatherwhere.airservice;
 
-import com.weatherwhere.airservice.service.RealTimeAirServiceImpl;
+import com.weatherwhere.airservice.service.airrealtime.RealTimeAirServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

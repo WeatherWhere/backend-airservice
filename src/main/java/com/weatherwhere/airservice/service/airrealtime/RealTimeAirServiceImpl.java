@@ -1,9 +1,9 @@
-package com.weatherwhere.airservice.service;
+package com.weatherwhere.airservice.service.airrealtime;
 
-import com.weatherwhere.airservice.domain.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.RealTimeAirDto;
-import com.weatherwhere.airservice.repository.RealTimeAirRepository;
-import com.weatherwhere.airservice.repository.StationNameRepository;
+import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
+import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
+import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Log4j2
@@ -59,8 +60,7 @@ public class RealTimeAirServiceImpl implements RealTimeService {
                 "&pageNo=1" +
                 "&numOfRows=1" +
                 "&returnType=json" +
-                "&serviceKey=" + "LKiVUvMq5P2zZ88FZoOq/h0k9y98k2pEdRcJSheoYPwZxYlcaGkQugApuMndBS0dqRg1QeziMPwW9rbVvRIcRA==" +
-                //System.getProperty("AIR_FORECAST_SERVICE_KEY_DE") +
+                "&serviceKey=" + System.getProperty("AIR_FORECAST_SERVICE_KEY_DE") +
                 "&ver=1.0";
         String jsonString = restTemplate.getForObject(apiUrl, String.class);
         try {
@@ -129,6 +129,12 @@ public class RealTimeAirServiceImpl implements RealTimeService {
         return "성공";
     }
 
+    //DB에서 데이터 가져오기
+    @Override
+    @Transactional
+    public RealTimeAirEntity getRealTimeDBData(String stationName){
+        return realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
+    }
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드
     private final StationNameRepository stationNameRepository;
