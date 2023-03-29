@@ -4,6 +4,7 @@ import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
 import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
+import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -130,9 +131,11 @@ public class RealTimeAirServiceImpl implements RealTimeService {
     }
 
     //DB에서 데이터 가져오기
+    private final GetTmXYAndStationServiceImpl getTmXYAndStationService;
     @Override
     @Transactional
-    public RealTimeAirEntity getRealTimeDBData(String stationName){
+    public RealTimeAirEntity getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+        String stationName = getTmXYAndStationService.getStationName(x, y);
         return realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
     }
 
