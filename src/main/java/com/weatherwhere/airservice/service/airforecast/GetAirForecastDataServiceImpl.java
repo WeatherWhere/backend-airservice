@@ -49,8 +49,8 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
             log.error("db에 7일의 주간예보 데이터 없음");
         }
         // 데이터가 DB에 없더라면 7개 안채워진채로 나갈 수 있음!
-        log.info("주간예보 개수: "+sevenDaysData.size());
-        log.info("7일의 주간예보: "+sevenDaysData);
+        log.info("주간예보 개수: {}",sevenDaysData.size());
+        log.info("7일의 주간예보: {}",sevenDaysData);
         return sevenDaysData;
     }
 }

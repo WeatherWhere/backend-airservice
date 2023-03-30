@@ -92,9 +92,10 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
                 airForecastRepository.save(airForecastEntity);
                 resultDtoList.add(toDto(airForecastEntity));
             }
+            log.info("saveDB: {}",resultDtoList);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("saveDB error: "+e.getMessage());
+            log.error("saveDB error: {}",e.getMessage());
         }
 
         return resultDtoList;
@@ -119,10 +120,10 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
                 List<AirForecastDto> dataList=dataToDto(data.get(key), key);
                 dtoList.addAll(saveDb(dataList));
             }
-            log.info("대기 주간예보 저장 데이터: "+dtoList);
+            log.info("대기 주간예보 호출 데이터:{}",data);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("getApiData error: "+e.getMessage());
+            log.error("getApiData error:{}",e.getMessage());
         }
 
         return dtoList;
