@@ -25,7 +25,7 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     // 해당 위치 7일 대기오염 주간예보 DB 가져오기
     @Override
     @Transactional
-    public List<AirForecastDto> getSevenDaysDataOfLocation(SearchAirForecastDto searchAirForecastDto) throws Exception {
+    public List<AirForecastDto> getSevenDaysDataOfLocation(SearchAirForecastDto searchAirForecastDto){
         AirForecastId airForecastId=new AirForecastId();
         airForecastId.setBaseDate(searchAirForecastDto.getBaseDate());
         airForecastId.setCity(searchAirForecastDto.getCity());
@@ -45,8 +45,11 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
                 sevenDaysData.add(entityToDto(airForecastEntity));
             }
         }catch (NoSuchElementException e){
+            // db에서 찾는 데이터 없을 경우
             e.getStackTrace();
             log.error("db에 7일의 주간예보 데이터 없음");
+        }catch (Exception e){
+            log.error(e.getMessage());
         }
         // 데이터가 DB에 없더라면 7개 안채워진채로 나갈 수 있음!
         log.info("주간예보 개수: {}",sevenDaysData.size());

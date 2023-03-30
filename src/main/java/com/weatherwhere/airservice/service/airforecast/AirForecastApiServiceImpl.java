@@ -86,17 +86,12 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     public List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
         List<AirForecastDto> resultDtoList=new ArrayList<>();
 
-        try{
-            for (AirForecastDto dto : dtoList){
-                AirForecastEntity airForecastEntity=toEntity(dto);
-                airForecastRepository.save(airForecastEntity);
-                resultDtoList.add(toDto(airForecastEntity));
-            }
-            log.info("saveDB: {}",resultDtoList);
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error("saveDB error: {}",e.getMessage());
+        for (AirForecastDto dto : dtoList){
+            AirForecastEntity airForecastEntity=toEntity(dto);
+            airForecastRepository.save(airForecastEntity);
+            resultDtoList.add(toDto(airForecastEntity));
         }
+        log.info("saveDB: {}",resultDtoList);
 
         return resultDtoList;
     }
@@ -121,9 +116,17 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
                 dtoList.addAll(saveDb(dataList));
             }
             log.info("대기 주간예보 호출 데이터:{}",data);
-        }catch (Exception e){
+        }catch (IndexOutOfBoundsException e){
+            // 공공데이터 api에 없는 정보 호출했을 경우
             e.printStackTrace();
             log.error("getApiData error:{}",e.getMessage());
+        }catch (ParseException | java.text.ParseException e){
+            // json 데이터 파싱할 때 error
+            e.printStackTrace();
+            log.error("data parsing error: {}",e.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("error: {}",e.getMessage());
         }
 
         return dtoList;
