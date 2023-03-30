@@ -82,8 +82,7 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     }
 
     // db 저장
-    @Transactional
-    public List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
+    private List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
         List<AirForecastDto> resultDtoList=new ArrayList<>();
 
         for (AirForecastDto dto : dtoList){

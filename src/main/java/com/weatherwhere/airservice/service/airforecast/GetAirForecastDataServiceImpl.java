@@ -34,10 +34,9 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
         List<AirForecastDto> sevenDaysData=new ArrayList<>();
         try{
             for(int i=0; i<7; i++){
-                AirForecastId searchId=new AirForecastId();
+
                 LocalDate searchDate=airForecastId.getBaseDate().plusDays(i);// 호출한 LocalDate 객체에 일(day)이 더해진 LocalDate 객체를 반환합니다.
-                searchId.setBaseDate(searchDate);
-                searchId.setCity(airForecastId.getCity());
+                AirForecastId searchId=new AirForecastId(searchDate,airForecastId.getCity());
 
                 // db에서 해당 날짜가 없을 때  예외처리!
                 AirForecastEntity airForecastEntity=airForecastRepository.findByAirForecastId(searchId)
