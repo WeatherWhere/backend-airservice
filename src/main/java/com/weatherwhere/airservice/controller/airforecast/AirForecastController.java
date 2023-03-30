@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
-import com.weatherwhere.airservice.service.airforecast.AirForecastApiServiceImpl;
-import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataServiceImpl;
+import com.weatherwhere.airservice.service.airforecast.AirForecastApiService;
+import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class AirForecastController {
-    private final AirForecastApiServiceImpl airForecastService;
+    private final AirForecastApiService airForecastService;
 
-    private final GetAirForecastDataServiceImpl getAirForecastDataService;
+    private final GetAirForecastDataService getAirForecastDataService;
     // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
     public List<AirForecastDto> getAirForecastApiData(@RequestParam LocalDate date) throws
