@@ -14,9 +14,11 @@ import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
 import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     private final AirForecastRepository airForecastRepository;
 
@@ -30,19 +32,25 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
 
 
         List<AirForecastDto> sevenDaysData=new ArrayList<>();
-        for(int i=0; i<7; i++){
-            AirForecastId searchId=new AirForecastId();
-            LocalDate searchDate=airForecastId.getBaseDate().plusDays(i);// 호출한 LocalDate 객체에 일(day)이 더해진 LocalDate 객체를 반환합니다.
-            searchId.setBaseDate(searchDate);
-            searchId.setCity(airForecastId.getCity());
+        try{
+            for(int i=0; i<7; i++){
+                AirForecastId searchId=new AirForecastId();
+                LocalDate searchDate=airForecastId.getBaseDate().plusDays(i);// 호출한 LocalDate 객체에 일(day)이 더해진 LocalDate 객체를 반환합니다.
+                searchId.setBaseDate(searchDate);
+                searchId.setCity(airForecastId.getCity());
 
-
-            // db에서 해당 날짜가 없을 때  예외처리!
-            AirForecastEntity airForecastEntity=airForecastRepository.findByAirForecastId(searchId)
-                .orElseThrow(() -> new NoSuchElementException());
-            sevenDaysData.add(entityToDto(airForecastEntity));
-
+                // db에서 해당 날짜가 없을 때  예외처리!
+                AirForecastEntity airForecastEntity=airForecastRepository.findByAirForecastId(searchId)
+                    .orElseThrow(() -> new NoSuchElementException());
+                sevenDaysData.add(entityToDto(airForecastEntity));
+            }
+        }catch (NoSuchElementException e){
+            e.getStackTrace();
+            log.error("db에 7일의 주간예보 데이터 없음");
         }
+        // 데이터가 DB에 없더라면 7개 안채워진채로 나갈 수 있음!
+        log.info("주간예보 개수: "+sevenDaysData.size());
+        log.info("7일의 주간예보: "+sevenDaysData);
         return sevenDaysData;
     }
 }

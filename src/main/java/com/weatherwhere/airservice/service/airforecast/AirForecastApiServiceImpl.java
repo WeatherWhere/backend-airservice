@@ -86,18 +86,24 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     public List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
         List<AirForecastDto> resultDtoList=new ArrayList<>();
 
-        for (AirForecastDto dto : dtoList){
-            AirForecastEntity airForecastEntity=toEntity(dto);
-            airForecastRepository.save(airForecastEntity);
-            resultDtoList.add(toDto(airForecastEntity));
+        try{
+            for (AirForecastDto dto : dtoList){
+                AirForecastEntity airForecastEntity=toEntity(dto);
+                airForecastRepository.save(airForecastEntity);
+                resultDtoList.add(toDto(airForecastEntity));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("saveDB error: "+e.getMessage());
         }
+
         return resultDtoList;
     }
 
 
     // 대기 주간예보 api 데이터 받아오기 & db 저장
     @Override
-    public List<AirForecastDto> getApiData(LocalDate date) throws java.text.ParseException, ParseException {
+    public List<AirForecastDto> getApiData(LocalDate date){
         List<AirForecastDto> dtoList=new ArrayList<>();
 
         RestTemplate restTemplate= new RestTemplate();
@@ -108,16 +114,15 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
             // Json 파싱해서 4일 data 저장
             HashMap<LocalDate,String> data=jsonParsing(result);
 
-
             // 4일 데이터 가공해서 db에 넣기
             for(LocalDate key: data.keySet()){ // key: 날짜, value: 가공 전 데이터
                 List<AirForecastDto> dataList=dataToDto(data.get(key), key);
                 dtoList.addAll(saveDb(dataList));
             }
-
+            log.info("대기 주간예보 저장 데이터: "+dtoList);
         }catch (Exception e){
             e.printStackTrace();
-
+            log.error("getApiData error: "+e.getMessage());
         }
 
         return dtoList;
