@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.json.simple.parser.ParseException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
 import com.weatherwhere.airservice.service.airforecast.AirForecastApiService;
-import com.weatherwhere.airservice.service.airforecast.AirForecastApiServiceImpl;
-import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataServiceImpl;
+import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
+
 
 @SpringBootTest
 public class AitForecastTests {
@@ -22,7 +21,7 @@ public class AitForecastTests {
     private AirForecastApiService airForecastApiService;
 
     @Autowired
-    private GetAirForecastDataServiceImpl getAirForecastDataService;
+    private GetAirForecastDataService getAirForecastDataService;
 
     static LocalDate date;
     @BeforeEach
@@ -54,7 +53,7 @@ public class AitForecastTests {
 
     @Test
     @DisplayName("7일의 주간예보 DB에서 조회하는 테스트")
-    public void testGetSevenDaysData(){
+    public void testGetSevenDaysData() throws Exception {
         SearchAirForecastDto searchAirForecastDto=new SearchAirForecastDto(date,"서울");
 
         // 아직 임시로 print하고 나중에 response에 성공여부 출력해보기
