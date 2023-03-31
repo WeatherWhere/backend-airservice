@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
-import com.weatherwhere.airservice.dto.response.ResultDto;
+import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.service.airforecast.AirForecastApiService;
 import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
 

@@ -3,7 +3,7 @@ package com.weatherwhere.airservice.service.airforecast;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
-import com.weatherwhere.airservice.dto.response.ResultDto;
+import com.weatherwhere.airservice.dto.ResultDto;
 
 public interface GetAirForecastDataService {
 

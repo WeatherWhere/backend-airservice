@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.dto.response;
+package com.weatherwhere.airservice.dto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

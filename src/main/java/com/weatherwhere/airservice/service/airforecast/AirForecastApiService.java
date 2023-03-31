@@ -7,7 +7,7 @@ import org.json.simple.parser.ParseException;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
-import com.weatherwhere.airservice.dto.response.ResultDto;
+import com.weatherwhere.airservice.dto.ResultDto;
 
 public interface AirForecastApiService {
     // 대기 주간예보 api 데이터 받아오는 메서드

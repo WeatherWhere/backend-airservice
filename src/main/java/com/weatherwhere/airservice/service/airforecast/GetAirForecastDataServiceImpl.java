@@ -13,7 +13,7 @@ import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
-import com.weatherwhere.airservice.dto.response.ResultDto;
+import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
