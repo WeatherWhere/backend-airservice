@@ -1,16 +1,17 @@
 package com.weatherwhere.airservice.service.airforecast;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.json.simple.parser.ParseException;
+
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
+import com.weatherwhere.airservice.dto.response.ResultDto;
 
 public interface AirForecastApiService {
     // 대기 주간예보 api 데이터 받아오는 메서드
-    List<AirForecastDto> getApiData(LocalDate date) throws ParseException, java.text.ParseException;
+    ResultDto<Object> getApiData(LocalDate date) throws ParseException, java.text.ParseException;
 
     // DTO -> Entity
     default AirForecastEntity toEntity(AirForecastDto dto){
