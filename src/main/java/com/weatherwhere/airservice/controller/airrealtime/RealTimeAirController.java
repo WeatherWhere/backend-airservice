@@ -1,8 +1,7 @@
 package com.weatherwhere.airservice.controller.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
-import com.weatherwhere.airservice.service.airrealtime.RealTimeAirServiceImpl;
+import com.weatherwhere.airservice.service.airrealtime.RealTimeAirService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +14,9 @@ import java.text.ParseException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("air/realtime")
+@RequestMapping("/air/realtime")
 public class RealTimeAirController {
-    private final RealTimeAirServiceImpl realTimeAirService;
-    private  final GetTmXYAndStationServiceImpl getTmXYAndStationService;
+    private final RealTimeAirService realTimeAirService;
 
     //DB 업데이트
     @GetMapping("/api")
@@ -30,7 +28,7 @@ public class RealTimeAirController {
     @GetMapping("/data")
     public ResponseEntity<RealTimeAirEntity> getRealTimeDBData(@RequestParam Double x, Double y) {
         try {
-            RealTimeAirEntity data = realTimeAirService.getRealTimeDBData(x, y);
+            RealTimeAirEntity data = (RealTimeAirEntity) realTimeAirService.getRealTimeDBData(x, y);
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

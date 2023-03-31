@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class RealTimeAirServiceImpl implements RealTimeService {
+public class RealTimeAirServiceImpl implements RealTimeAirService {
 
     private final RealTimeAirRepository realTimeAirRepository;
 

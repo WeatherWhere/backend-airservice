@@ -2,11 +2,10 @@ package com.weatherwhere.airservice.service.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
-import jakarta.transaction.Transactional;
 
 import java.text.ParseException;
 
-public interface RealTimeService {
+public interface RealTimeAirService {
 
     Object getRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
     Object saveRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
