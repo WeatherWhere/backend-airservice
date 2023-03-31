@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("air/forecast")
+@RequestMapping("/air/forecast")
 @Slf4j
 @RequiredArgsConstructor
 public class AirForecastController {
