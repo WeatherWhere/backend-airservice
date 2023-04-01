@@ -5,14 +5,12 @@ import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
 
 import java.text.ParseException;
 
-public interface RealTimeService {
+public interface RealTimeAirService {
 
     Object getRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
     Object saveRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
-
     Object updateRealtimeAirDate() throws ParseException, org.json.simple.parser.ParseException;
-
-    Object getRealTimeDBData(String stationName);
+    Object getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException;
 
     //Dto -> Entity 메서드
     default RealTimeAirEntity ToEntity(RealTimeAirDto dto) {

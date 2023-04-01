@@ -24,7 +24,7 @@ public class RealTimeAirEntity extends BaseEntity {
     private String stationName;
 
     @Column(name = "data_time")
-    private String dataTime;
+    private LocalDateTime dataTime;
 
     @Column(name = "so2_grade")
     private int so2Grade;

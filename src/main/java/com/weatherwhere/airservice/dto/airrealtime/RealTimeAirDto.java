@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class RealTimeAirDto {
     private String stationName;
-    private String dataTime;
+    private LocalDateTime dataTime;
     private int so2Grade;
     private int khaiValue;
     private double so2Value;
