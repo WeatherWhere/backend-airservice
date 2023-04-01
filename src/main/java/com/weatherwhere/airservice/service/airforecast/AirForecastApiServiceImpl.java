@@ -10,15 +10,15 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
+import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
-
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -82,8 +82,7 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     }
 
     // db 저장
-    @Transactional
-    public List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
+    private List<AirForecastDto> saveDb(List<AirForecastDto> dtoList){
         List<AirForecastDto> resultDtoList=new ArrayList<>();
 
         for (AirForecastDto dto : dtoList){
@@ -91,13 +90,15 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
             airForecastRepository.save(airForecastEntity);
             resultDtoList.add(toDto(airForecastEntity));
         }
+        log.info("saveDB: {}",resultDtoList);
+
         return resultDtoList;
     }
 
 
     // 대기 주간예보 api 데이터 받아오기 & db 저장
     @Override
-    public List<AirForecastDto> getApiData(LocalDate date) throws java.text.ParseException, ParseException {
+    public ResultDto<Object> getApiData(LocalDate date){
         List<AirForecastDto> dtoList=new ArrayList<>();
 
         RestTemplate restTemplate= new RestTemplate();
@@ -108,19 +109,29 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
             // Json 파싱해서 4일 data 저장
             HashMap<LocalDate,String> data=jsonParsing(result);
 
-
             // 4일 데이터 가공해서 db에 넣기
             for(LocalDate key: data.keySet()){ // key: 날짜, value: 가공 전 데이터
                 List<AirForecastDto> dataList=dataToDto(data.get(key), key);
                 dtoList.addAll(saveDb(dataList));
             }
+            log.info("대기 주간예보 호출 데이터:{}",data);
+            return ResultDto.of(HttpStatus.OK.value(),"대기 주간예보 데이터를 저장하는데 성공하였습니다.",dtoList);
 
-        }catch (Exception e){
+        }catch (IndexOutOfBoundsException e) {
+            // 공공데이터 api에 없는 정보 호출했을 경우
             e.printStackTrace();
-
+            log.error("IndexOutOfBoundsException이 발생");
+            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "IndexOutOfBoundsException이 발생했습니다.", null);
+        } catch (ParseException | java.text.ParseException e) {
+            // json 데이터 파싱할 때 error
+            e.printStackTrace();
+            log.error("ParseException이 발생");
+            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ParseException이 발생했습니다.", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("예기치 못한 에러가 발생");
+            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "예기치 못한 에러가 발생했습니다.", null);
         }
-
-        return dtoList;
     }
 
     // String 가공하여 Dto에 넣어주는 메서드
