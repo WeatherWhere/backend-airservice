@@ -22,6 +22,9 @@ def DB_URL = env.DB_URL
 def DB_USERNAME = env.DB_USERNAME
 def DB_PASSWORD = env.DB_PASSWORD
 def DB_NAME = env.DB_NAME
+def AIR_FORECAST_SERVICE_KEY_DE=env.AIR_FORECAST_SERVICE_KEY_DE;
+def KAKAO_REST_API_KEY=env.KAKAO_REST_API_KEY;
+def STATION_SERVICE_KE_DE=env.STATION_SERVICE_KE_DE;
 
 // application plugin에서 사용하는 설정
 run {
@@ -70,15 +73,14 @@ tasks.named('test') {
 	systemProperty 'DB_URL', DB_URL
 	systemProperty 'DB_USERNAME', DB_USERNAME
 	systemProperty 'DB_PASSWORD', DB_PASSWORD
+	systemProperty "AIR_FORECAST_SERVICE_KEY_DE", AIR_FORECAST_SERVICE_KEY_DE
+	systemProperty "KAKAO_REST_API_KEY", KAKAO_REST_API_KEY
+	systemProperty "STATION_SERVICE_KE_DE", STATION_SERVICE_KE_DE
 }
 
 configurations{
 	all{
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
 }
 
