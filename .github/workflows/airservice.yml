@@ -93,16 +93,14 @@ jobs:
           repository: 'weatherwhere/backend-kubernetes'
           ref: 'test/argoCD_deploy'
 
+      - name: Update Kubernetes YAML
+        run: |
+          ls
+          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
           add: .
           message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
           cwd: 'airservice'
-
-      - name: Update Kubernetes YAML
-        run: |
-          ls
-          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
-
-
