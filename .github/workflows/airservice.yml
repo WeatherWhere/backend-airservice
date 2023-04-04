@@ -67,7 +67,11 @@ jobs:
           message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
           branch: 'test/argoCD_deploy'
           path: 'airservice'
+
+
+      - name: Update Kubernetes YAML
         run: |
+          run: |
           sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" deploy.yml
 
       - name: SSH into EC2 Instance
