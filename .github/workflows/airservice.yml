@@ -56,9 +56,9 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
           aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-          docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}{{github.run_number}} -f Dockerfile .
-          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}{{github.run_number}}
-          echo "image=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}{{github.run_number}}" >> $GITHUB_OUTPUT
+          docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}} -f Dockerfile .
+          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
+          echo "image=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}" >> $GITHUB_OUTPUT
 
       - name: SSH into EC2 Instance
         uses: appleboy/ssh-action@master
@@ -69,5 +69,5 @@ jobs:
           port: 22
           script: |
             aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-            docker pull ${{env.ECR_REGISTRY}}/airservice:${{ env.IMAGE_TAG_PREFIX }}{{github.run_number}}
-            docker rm -f airservice || true && docker run -itd --name airservice -p 8090:8080 ${{env.ECR_REGISTRY}}/airservice:${{ env.IMAGE_TAG_PREFIX }}{{github.run_number}}
+            docker pull ${{env.ECR_REGISTRY}}/airservice:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
+            docker rm -f airservice || true && docker run -itd --name airservice -p 8090:8080 ${{env.ECR_REGISTRY}}/airservice:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
