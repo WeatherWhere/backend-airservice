@@ -92,6 +92,7 @@ jobs:
         with:
           repository: 'weatherwhere/backend-kubernetes'
           ref: 'test/argoCD_deploy'
+          token: ${{ secrets.ACTION_TOKEN }}
 
       - name: Update Kubernetes YAML
         run: |
