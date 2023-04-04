@@ -98,7 +98,7 @@ jobs:
         with:
           add: .
           message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
-          path: 'airservice/deploy.yml'
+          cwd: 'airservice'
 
       - name: Update Kubernetes YAML
         run: |
