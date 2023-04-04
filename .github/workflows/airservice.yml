@@ -99,7 +99,7 @@ jobs:
           ls
           echo "BEFORE sed............"
           cat airservice/deploy.yml
-          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:[^ ]*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml > airservice/deploy.yml
+          sed -i 's/image: {{ env.ECR_REGISTRY }}\/${{ env.ECR_REPOSITORY }}:*/{{ env.ECR_REGISTRY }}\/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}/g' airservice/deploy.yml
           echo "AFTER sed............"
           cat airservice/deploy.yml
 
