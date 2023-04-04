@@ -60,6 +60,16 @@ jobs:
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
           echo "image=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}" >> $GITHUB_OUTPUT
 
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: .
+          message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
+          branch: 'test/argoCD_deploy'
+          path: 'airservice'
+        run: |
+          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" deploy.yml
+
       - name: SSH into EC2 Instance
         uses: appleboy/ssh-action@master
         with:
@@ -69,5 +79,5 @@ jobs:
           port: 22
           script: |
             aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-            docker pull ${{env.ECR_REGISTRY}}/airservice:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
-            docker rm -f airservice || true && docker run -itd --name airservice -p 8090:8080 ${{env.ECR_REGISTRY}}/airservice:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
+            docker pull ${{env.ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
+            docker rm -f ${{ env.ECR_REPOSITORY }} || true && docker run -itd --name ${{ env.ECR_REPOSITORY }} -p 8090:8080 ${{env.ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
