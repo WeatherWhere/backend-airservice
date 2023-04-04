@@ -60,20 +60,20 @@ jobs:
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
           echo "image=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}" >> $GITHUB_OUTPUT
 
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: .
-          message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
-          repository: 'backend-kubernetes'
-          branch: 'test/argoCD_deploy'
-          path: 'airservice/deploy.yml'
-
-
-      - name: Update Kubernetes YAML
-        run: |
-          ls
-          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
+#      - name: Commit changes
+#        uses: EndBug/add-and-commit@v7
+#        with:
+#          add: .
+#          message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
+#          repository: 'backend-kubernetes'
+#          branch: 'test/argoCD_deploy'
+#          path: 'airservice/deploy.yml'
+#
+#
+#      - name: Update Kubernetes YAML
+#        run: |
+#          ls
+#          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
 
       - name: SSH into EC2 Instance
         uses: appleboy/ssh-action@master
@@ -86,3 +86,23 @@ jobs:
             aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
             docker pull ${{env.ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
             docker rm -f ${{ env.ECR_REPOSITORY }} || true && docker run -itd --name ${{ env.ECR_REPOSITORY }} -p 8090:8080 ${{env.ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
+
+      - name: Checkout Kubernetes YAML
+        uses: actions/checkout@v2
+        with:
+          repository: 'backend-kubernetes'
+          ref: 'test/argoCD_deploy'
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: .
+          message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
+          path: 'airservice/deploy.yml'
+
+      - name: Update Kubernetes YAML
+        run: |
+          ls
+          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
+
+
