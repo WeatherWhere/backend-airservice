@@ -103,8 +103,9 @@ jobs:
           cat airservice/deploy.yml
 
       - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: .
-          message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
-          cwd: 'airservice'
+        run: |
+          git config user.name "$GIT_USER_NAME"
+          git config user.email "$GIT_USER_EMAIL"
+          git add airservice/deploy.yml
+          git commit -m "Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}"
+          git push origin test/argoCD_deploy
