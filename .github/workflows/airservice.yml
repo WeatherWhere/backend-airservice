@@ -88,14 +88,14 @@ jobs:
             docker rm -f ${{ env.ECR_REPOSITORY }} || true && docker run -itd --name ${{ env.ECR_REPOSITORY }} -p 8090:8080 ${{env.ECR_REGISTRY}}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}
 
       - name: Checkout Kubernetes YAML
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: 'weatherwhere/backend-kubernetes'
           ref: 'test/argoCD_deploy'
 
       - name: Update Kubernetes YAML
         run: |
-          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}.*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
+          sed -i "s|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:*|image: {{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}|g" airservice/deploy.yml
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
