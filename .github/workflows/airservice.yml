@@ -65,6 +65,7 @@ jobs:
         with:
           add: .
           message: 'Auto-commit new image tag - ${{ env.IMAGE_TAG_PREFIX }}${{github.run_number}}'
+          repository: 'backend-kubernetes'
           branch: 'test/argoCD_deploy'
           path: 'airservice'
 
