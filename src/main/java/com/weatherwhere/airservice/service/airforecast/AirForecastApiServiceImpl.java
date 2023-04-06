@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
-import com.weatherwhere.airservice.dto.ResultDto;
+import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -98,7 +98,7 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
 
     // 대기 주간예보 api 데이터 받아오기 & db 저장
     @Override
-    public ResultDto<Object> getApiData(LocalDate date){
+    public ResultDTO<Object> getApiData(LocalDate date){
         List<AirForecastDto> dtoList=new ArrayList<>();
 
         RestTemplate restTemplate= new RestTemplate();
@@ -115,22 +115,22 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
                 dtoList.addAll(saveDb(dataList));
             }
             log.info("대기 주간예보 호출 데이터:{}",data);
-            return ResultDto.of(HttpStatus.OK.value(),"대기 주간예보 데이터를 저장하는데 성공하였습니다.",dtoList);
+            return ResultDTO.of(HttpStatus.OK.value(),"대기 주간예보 데이터를 저장하는데 성공하였습니다.",dtoList);
 
         }catch (IndexOutOfBoundsException e) {
             // 공공데이터 api에 없는 정보 호출했을 경우
             e.printStackTrace();
             log.error("IndexOutOfBoundsException이 발생");
-            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "IndexOutOfBoundsException이 발생했습니다.", null);
+            return ResultDTO.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "IndexOutOfBoundsException이 발생했습니다.", null);
         } catch (ParseException | java.text.ParseException e) {
             // json 데이터 파싱할 때 error
             e.printStackTrace();
             log.error("ParseException이 발생");
-            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ParseException이 발생했습니다.", null);
+            return ResultDTO.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ParseException이 발생했습니다.", null);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("예기치 못한 에러가 발생");
-            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "예기치 못한 에러가 발생했습니다.", null);
+            return ResultDTO.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "예기치 못한 에러가 발생했습니다.", null);
         }
     }
 

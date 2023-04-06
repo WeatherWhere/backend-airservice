@@ -28,5 +28,4 @@ public class AirForecastEntity extends BaseEntity {
     private String forecast;
     @Column(name="reliability")
     private String reliability;
-
 }
