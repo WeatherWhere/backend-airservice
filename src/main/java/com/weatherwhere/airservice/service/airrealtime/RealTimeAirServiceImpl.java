@@ -32,6 +32,7 @@ import java.util.NoSuchElementException;
 public class RealTimeAirServiceImpl implements RealTimeAirService {
 
     private final RealTimeAirRepository realTimeAirRepository;
+    private final GetTmXYAndStationServiceImpl getTmXYAndStationService;
 
     //JSON 파싱
     public Object JsonParser(String jsonString) throws org.json.simple.parser.ParseException {
@@ -77,12 +78,13 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     //받아온 데이터를 DB에 저장
     @Override
     @Transactional
-    public ResultDto<RealTimeAirDto> saveRealTimeAirData(String stationName) {
+    public RealTimeAirDto saveRealTimeAirData(String stationName) {
+        RealTimeAirDto realTimeAirDto = new RealTimeAirDto();
         try {
             Object realTimeAirData = getRealTimeAirData(stationName);
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-            RealTimeAirDto realTimeAirDto = RealTimeAirDto.builder()
+            realTimeAirDto = RealTimeAirDto.builder()
                     .stationName(stationName)
                     .dataTime(LocalDateTime.parse((String) ((JSONObject) realTimeAirData).get("dataTime"), dateFormatter))
                     .so2Value(Double.parseDouble((String) ((JSONObject) realTimeAirData).get("so2Value")))
@@ -105,25 +107,22 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
             RealTimeAirEntity realTimeAirEntity = ToEntity(realTimeAirDto);
             realTimeAirRepository.save(realTimeAirEntity);
 
-            log.info("실시간 대기정보 호출 데이터:{}",realTimeAirDto);
-            return ResultDto.of(HttpStatus.OK.value(), "실시간 대기정보 데이터를 저장하는데 성공하였습니다.", realTimeAirDto);
+            log.info("실시간 대기정보 호출 데이터:{}", realTimeAirDto);
         } catch (IndexOutOfBoundsException e) {
             // 공공데이터 api에 없는 정보 호출했을 경우
             e.printStackTrace();
-            log.error("IndexOutOfBoundsException이 발생");
-            return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "IndexOutOfBoundsException이 발생했습니다.", null);
+            log.error("IndexOutOfBoundsException이 발생", stationName);
         } catch (Exception e) {
             if (e instanceof org.json.simple.parser.ParseException) {
                 // json 데이터 파싱할 때 error
                 e.printStackTrace();
-                log.error("ParseException이 발생");
-                return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ParseException이 발생했습니다.", null);
+                log.error("ParseException이 발생", stationName);
             } else {
                 e.printStackTrace();
-                log.error("예기치 못한 에러가 발생");
-                return ResultDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "예기치 못한 에러가 발생했습니다.", null);
+                log.error("예기치 못한 에러가 발생", stationName);
             }
         }
+        return realTimeAirDto;
     }
 
 
@@ -147,12 +146,14 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     }
 
     //DB에서 데이터 가져오기
-    private final GetTmXYAndStationServiceImpl getTmXYAndStationService;
     @Override
     @Transactional
-    public RealTimeAirEntity getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+    public ResultDto<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+        List<RealTimeAirEntity> List = new ArrayList<>();
         String stationName = getTmXYAndStationService.getStationName(x, y);
-        return realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
+        RealTimeAirEntity result = realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
+        List.add(result);
+        return ResultDto.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
     }
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드
