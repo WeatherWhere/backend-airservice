@@ -1,6 +1,7 @@
 package com.weatherwhere.airservice.controller.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.service.airrealtime.RealTimeAirService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
