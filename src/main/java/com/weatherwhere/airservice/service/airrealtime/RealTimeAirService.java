@@ -1,15 +1,21 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
 
 import java.text.ParseException;
+import java.util.List;
 
 public interface RealTimeAirService {
 
+    //실시간 대기 정보 가져오는 메서드
     Object getRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
+    //실시간 대기 정보 DB에 저장하는 메서드
     Object saveRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
+    //DB 업데이트 메서드
     Object updateRealtimeAirDate() throws ParseException, org.json.simple.parser.ParseException;
+    //x, y 좌표 받아서 DB에서 해당하는 대기정보 보여주는 메서드
     Object getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException;
 
     //Dto -> Entity 메서드
