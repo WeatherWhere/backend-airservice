@@ -38,13 +38,12 @@ public class AitForecastTests {
     @Test
     @DisplayName("대기 주간예보 api를 호출하고 db에 저장하는 테스트")
     public void testGetApi() throws ParseException, java.text.ParseException {
-        /*
         // 오늘 날짜 전날
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         String formatted = date.format(formatter);
         date=date.minusDays(1);
-        System.out.println("date:     "+date);*/
+        System.out.println("date:     "+date);
 
         // 아직 임시로 print하고 나중에 response에 성공여부 출력해보기
         System.out.println(airForecastApiService.getApiData(date));
@@ -57,7 +56,7 @@ public class AitForecastTests {
         SearchAirForecastDto searchAirForecastDto=new SearchAirForecastDto(date,"서울");
 
         // 아직 임시로 print하고 나중에 response에 성공여부 출력해보기
-        System.out.println(getAirForecastDataService.getSevenDaysDataOfLocation(searchAirForecastDto));
+        System.out.println(getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto));
         // Assertions.assertEquals();
     }
 }

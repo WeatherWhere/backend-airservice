@@ -1,6 +1,7 @@
 package com.weatherwhere.airservice.controller.airforecast;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/air/forecast")
@@ -25,20 +25,19 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AirForecastController {
     private final AirForecastApiService airForecastService;
-
     private final GetAirForecastDataService getAirForecastDataService;
     // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
-    public ResultDTO<Object> getAirForecastApiData(@RequestParam LocalDate date) throws
+    public ResultDTO<List<AirForecastDto>> getAirForecastApiData (@RequestParam LocalDate date) throws
         ParseException, java.text.ParseException {
         return airForecastService.getApiData(date);
     }
 
-    // 7일의 대기 주간예보 데이터 가져오기!
+    // 5일의 대기 주간예보 데이터 가져오기!
     @GetMapping(value = "/data")
-    public ResultDTO<Object> getSevenDaysAirForecastData(@ModelAttribute SearchAirForecastDto searchAirForecastDto) throws
+    public ResultDTO<List<AirForecastDto>> getFiveDaysAirForecastData(@ModelAttribute SearchAirForecastDto searchAirForecastDto) throws
         Exception {
-        return getAirForecastDataService.getSevenDaysDataOfLocation(searchAirForecastDto);
+        return getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto);
     }
 
     // 관광에서 쓸 api
