@@ -9,12 +9,12 @@ import java.io.IOException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class AirserviceApplicationTests {
-//	@Autowired
-//	private RealTimeAirServiceImpl realTimeAirService;
-//
-//	@Test
-//	void testStationNameRead() throws IOException {
-//        realTimeAirService.readStationName();
-//        System.out.println(realTimeAirService.readStationName());
-//    }
+	@Autowired
+	private RealTimeAirServiceImpl realTimeAirService;
+
+	@Test
+	void testStationNameRead() throws IOException {
+        realTimeAirService.readStationName();
+        System.out.println(realTimeAirService.readStationName());
+    }
 }
