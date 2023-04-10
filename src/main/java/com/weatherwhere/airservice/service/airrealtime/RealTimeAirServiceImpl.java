@@ -1,7 +1,7 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.ResultDto;
+import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
 import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
@@ -148,12 +148,12 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     //DB에서 데이터 가져오기
     @Override
     @Transactional
-    public ResultDto<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+    public ResultDTO<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
         List<RealTimeAirEntity> List = new ArrayList<>();
         String stationName = getTmXYAndStationService.getStationName(x, y);
         RealTimeAirEntity result = realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
         List.add(result);
-        return ResultDto.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
+        return ResultDTO.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
     }
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드

@@ -1,7 +1,6 @@
 package com.weatherwhere.airservice.service;
 
 import org.json.simple.parser.ParseException;
-import org.springframework.http.ResponseEntity;
 
 public interface GetTmXYAndStationService {
     // 경도 x, 위도 y로 측정소명 받기
