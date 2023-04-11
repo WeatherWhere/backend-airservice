@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDTO;
 import com.weatherwhere.airservice.service.airforecast.AirForecastApiService;
 import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
 
@@ -53,7 +53,7 @@ public class AitForecastTests {
     @Test
     @DisplayName("7일의 주간예보 DB에서 조회하는 테스트")
     public void testGetSevenDaysData() throws Exception {
-        SearchAirForecastDto searchAirForecastDto=new SearchAirForecastDto(date,"서울");
+        SearchAirForecastDTO searchAirForecastDto=new SearchAirForecastDTO(date,"서울");
 
         // 아직 임시로 print하고 나중에 response에 성공여부 출력해보기
         System.out.println(getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto));

@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
-import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;
 import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
 
@@ -83,10 +83,10 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     }
 
     // db 저장
-    private List<AirForecastDto> saveDb(List<AirForecastDto> dtoList) {
-        List<AirForecastDto> resultDtoList = new ArrayList<>();
+    private List<AirForecastDTO> saveDb(List<AirForecastDTO> dtoList) {
+        List<AirForecastDTO> resultDtoList = new ArrayList<>();
 
-        for (AirForecastDto dto : dtoList) {
+        for (AirForecastDTO dto : dtoList) {
             AirForecastEntity airForecastEntity = toEntity(dto);
             airForecastRepository.save(airForecastEntity);
             resultDtoList.add(toDto(airForecastEntity));
@@ -99,8 +99,8 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     // 대기 주간예보 api 데이터 받아오기 & db 저장
     @Override
     @Transactional
-    public ResultDTO<List<AirForecastDto>> getApiData(LocalDate date) {
-        List<AirForecastDto> dtoList = new ArrayList<>();
+    public ResultDTO<List<AirForecastDTO>> getApiData(LocalDate date) {
+        List<AirForecastDTO> dtoList = new ArrayList<>();
 
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -112,7 +112,7 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
 
             // 4일 데이터 가공해서 db에 넣기
             for(LocalDate key: data.keySet()){ // key: 날짜, value: 가공 전 데이터
-                List<AirForecastDto> dataList = dataToDto(data.get(key), key);
+                List<AirForecastDTO> dataList = dataToDto(data.get(key), key);
                 dtoList.addAll(saveDb(dataList));
             }
             log.info("대기 주간예보 호출 데이터 : {}",data);
@@ -132,7 +132,7 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
     }
 
     // String 가공하여 Dto에 넣어주는 메서드
-    private List<AirForecastDto> dataToDto(String data, LocalDate date) {
+    private List<AirForecastDTO> dataToDto(String data, LocalDate date) {
         /*
          * "서울 : 높음, 인천 : 높음, 경기북부 : 높음, 경기남부 : 높음, 강원영서 : 높음, 강원영동 : 낮음
          * , 대전 : 낮음, 세종 : 낮음, 충남 : 높음, 충북 : 높음, 광주 : 낮음, 전북 : 낮음
@@ -143,15 +143,15 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
 
         String reliability = city[city.length-1].split(" : ")[1].trim(); // 맨 마지막 신뢰도 저장!
 
-        AirForecastDto dto = new AirForecastDto();
-        List<AirForecastDto> dtoList = new ArrayList<>();
+        AirForecastDTO dto = new AirForecastDTO();
+        List<AirForecastDTO> dtoList = new ArrayList<>();
         // 해당 날짜에 cirt[i]: "서울 : 높음" 를 가공해서 dtoList에 넣는다.
         for (int i = 0; i<city.length-2; i++) {//cirt[i]: "서울 : 높음"
             String nowData[] = city[i].split(" : ");
             AirForecastId airForecastId = new AirForecastId();
             airForecastId.setCity(nowData[0].trim());
             airForecastId.setBaseDate(date);
-            dto = AirForecastDto.builder()
+            dto = AirForecastDTO.builder()
                 .baseDate(airForecastId.getBaseDate())
                 .city(airForecastId.getCity())
                 .forecast(nowData[1].trim())

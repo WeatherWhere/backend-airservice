@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
-import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;
+import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDTO;
 import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.service.airforecast.AirForecastApiService;
 import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
@@ -28,14 +28,14 @@ public class AirForecastController {
     private final GetAirForecastDataService getAirForecastDataService;
     // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
-    public ResultDTO<List<AirForecastDto>> getAirForecastApiData (@RequestParam LocalDate date) throws
+    public ResultDTO<List<AirForecastDTO>> getAirForecastApiData (@RequestParam LocalDate date) throws
         ParseException, java.text.ParseException {
         return airForecastService.getApiData(date);
     }
 
     // 5일의 대기 주간예보 데이터 가져오기!
     @GetMapping(value = "/data")
-    public ResultDTO<List<AirForecastDto>> getFiveDaysAirForecastData(@ModelAttribute SearchAirForecastDto searchAirForecastDto) throws
+    public ResultDTO<List<AirForecastDTO>> getFiveDaysAirForecastData(@ModelAttribute SearchAirForecastDTO searchAirForecastDto) throws
         Exception {
         return getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto);
     }
@@ -43,7 +43,7 @@ public class AirForecastController {
     // 관광에서 쓸 api
     // 해당 지역, 해당 시간 데이터 가져오기
     @GetMapping(value = "/tour/data")
-    public ResultDTO<AirForecastDto> getAirForecastData(@ModelAttribute SearchAirForecastDto searchAirForecastDto){
+    public ResultDTO<AirForecastDTO> getAirForecastData(@ModelAttribute SearchAirForecastDTO searchAirForecastDto){
         return getAirForecastDataService.getAirForecastOneDay(searchAirForecastDto);
     }
 }
