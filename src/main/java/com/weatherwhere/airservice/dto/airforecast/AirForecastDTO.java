@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class AirForecastDto {
+public class AirForecastDTO {
     private LocalDate baseDate;
     private String city;
     private String forecast;

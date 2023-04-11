@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.weatherwhere.airservice.domain.airforecast.AirForecastEntity;
 import com.weatherwhere.airservice.domain.airforecast.AirForecastId;
-import com.weatherwhere.airservice.dto.airforecast.AirForecastDto;
-import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDto;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;
+import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDTO;
 import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.repository.airforecast.AirForecastRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     private final AirForecastRepository airForecastRepository;
     @Override
     @Transactional
-    public ResultDTO<AirForecastDto> getAirForecastOneDay(SearchAirForecastDto searchAirForecastDto){
+    public ResultDTO<AirForecastDTO> getAirForecastOneDay(SearchAirForecastDTO searchAirForecastDto){
         AirForecastId airForecastId = new AirForecastId(searchAirForecastDto.getBaseDate(),searchAirForecastDto.getCity());
-        AirForecastDto data = new AirForecastDto();
+        AirForecastDTO data = new AirForecastDTO();
         try {
             AirForecastEntity airForecastEntity = airForecastRepository.findByAirForecastId(airForecastId)
                 .orElseThrow(() -> new NoSuchElementException());
@@ -44,12 +44,12 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     // 해당 위치 5일 대기오염 주간예보 DB 가져오기
     @Override
     @Transactional
-    public ResultDTO<List<AirForecastDto>> getFiveDaysDataOfLocation(SearchAirForecastDto searchAirForecastDto) {
+    public ResultDTO<List<AirForecastDTO>> getFiveDaysDataOfLocation(SearchAirForecastDTO searchAirForecastDto) {
         AirForecastId airForecastId = new AirForecastId();
         airForecastId.setBaseDate(searchAirForecastDto.getBaseDate());
         airForecastId.setCity(searchAirForecastDto.getCity());
 
-        List<AirForecastDto> fiveDaysData = new ArrayList<>();
+        List<AirForecastDTO> fiveDaysData = new ArrayList<>();
         try {
             for (int i=0; i<5; i++) {
 
