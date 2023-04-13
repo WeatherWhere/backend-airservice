@@ -94,13 +94,14 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
                 realTimeAirDto = RealTimeAirDto.builder()
                         .stationName(stationName)
                         .dataTime(LocalDateTime.parse((CharSequence) json.get("dataTime"), dateFormatter))
+                        .so2Grade(Integer.parseInt((String) json.get("so2Grade")))
                         .so2Value(Double.parseDouble((String) json.get("so2Value")))
                         .coValue(Double.parseDouble((String) json.get("coValue")))
                         .o3Value(Double.parseDouble((String) json.get("o3Value")))
                         .no2Value(Double.parseDouble((String) json.get("no2Value")))
                         .pm10Value(Integer.parseInt((String) json.get("pm10Value")))
                         .pm25Value(Integer.parseInt((String) json.get("pm25Value")))
-                        .khaiValue(Integer.parseInt((String) json.get("so2Grade")))
+                        .khaiValue(Integer.parseInt((String) json.get("khaiValue")))
                         .coGrade(Integer.parseInt((String) json.get("coGrade")))
                         .o3Grade(Integer.parseInt((String) json.get("o3Grade")))
                         .no2Grade(Integer.parseInt((String) json.get("no2Grade")))
@@ -130,24 +131,6 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
         return realTimeAirEntityList;
     }
 
-
-
-
-    @Override
-    @Transactional
-    public Object updateRealtimeAirDate(List<RealTimeAirEntity> realTimeAirEntityList) {
-        return realTimeAirEntityList.parallelStream().map(entity -> {
-                    try {
-                        realTimeAirRepository.save(entity);
-                        return entity.getStationName();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        log.warn("Failed to update entity: " + e.getMessage());
-                        return null;
-                    }
-                }).filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
 
     //DB에서 데이터 가져오기
     @Override
