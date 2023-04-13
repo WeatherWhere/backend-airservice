@@ -36,6 +36,8 @@ run {
 }
 
 dependencies {
+	//Spring Batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	// json 파싱
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	// json에서 환경변수 읽어오기 위해
