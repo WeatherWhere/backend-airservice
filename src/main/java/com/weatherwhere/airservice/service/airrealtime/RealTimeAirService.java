@@ -12,9 +12,8 @@ public interface RealTimeAirService {
 
     //실시간 대기 정보 가져오는 메서드
     Object getRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
-    //실시간 대기 정보 DB에 저장하는 메서드
 
-    //받아온 데이터를 DB에 저장
+    //엔티티 리스트를 만들어주는 메서드
     @Transactional
     List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList);
 
