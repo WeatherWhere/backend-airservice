@@ -13,9 +13,10 @@ public interface GetAirForecastDataService {
     // startDate에서 필요한 형식은 yyyy-MM-dd
     ResultDTO<List<AirForecastDTO>> getFiveDaysDataOfLocation(SearchAirForecastDTO searchAirForecastDto) throws Exception;
 
+    /*
     // 하루 주간예보 가져오기
     ResultDTO<AirForecastDTO> getAirForecastOneDay(SearchAirForecastDTO searchAirForecastDto);
-
+    */
 
     // Entity->DTO
     default AirForecastDTO entityToDto(AirForecastEntity airForecastEntity){

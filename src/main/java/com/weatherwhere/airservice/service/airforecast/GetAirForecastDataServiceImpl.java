@@ -23,6 +23,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     private final AirForecastRepository airForecastRepository;
+
+    /*
     @Override
     @Transactional
     public ResultDTO<AirForecastDTO> getAirForecastOneDay(SearchAirForecastDTO searchAirForecastDto){
@@ -40,7 +42,7 @@ public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
         }
         return ResultDTO.of(HttpStatus.OK.value(),"대기 주간예보를 조회하는데 성공하였습니다.",data);
     }
-
+*/
     // 해당 위치 5일 대기오염 주간예보 DB 가져오기
     @Override
     @Transactional

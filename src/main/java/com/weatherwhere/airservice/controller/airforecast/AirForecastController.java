@@ -40,10 +40,4 @@ public class AirForecastController {
         return getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto);
     }
 
-    // 관광에서 쓸 api
-    // 해당 지역, 해당 시간 데이터 가져오기
-    @GetMapping(value = "/tour/data")
-    public ResultDTO<AirForecastDTO> getAirForecastData(@ModelAttribute SearchAirForecastDTO searchAirForecastDto){
-        return getAirForecastDataService.getAirForecastOneDay(searchAirForecastDto);
-    }
 }
