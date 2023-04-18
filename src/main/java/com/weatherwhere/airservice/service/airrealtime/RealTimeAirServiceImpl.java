@@ -4,6 +4,7 @@ import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
 import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
 import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
 import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
@@ -130,7 +131,6 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
         }
         return realTimeAirEntityList;
     }
-
 
     //DB에서 데이터 가져오기
     @Override

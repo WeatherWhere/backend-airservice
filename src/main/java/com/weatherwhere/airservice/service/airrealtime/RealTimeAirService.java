@@ -16,12 +16,12 @@ public interface RealTimeAirService {
     //엔티티 리스트를 만들어주는 메서드
     @Transactional
     List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList);
-
+    
     //x, y 좌표 받아서 DB에서 해당하는 대기정보 보여주는 메서드
     Object getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException;
 
     //Dto -> Entity 메서드
-    default RealTimeAirEntity ToEntity(RealTimeAirDto dto) {
+    default RealTimeAirEntity ToEntity(RealTimeAirDTO dto) {
         RealTimeAirEntity entity = RealTimeAirEntity.builder()
                 .stationName(dto.getStationName())
                 .dataTime(dto.getDataTime())
@@ -44,8 +44,8 @@ public interface RealTimeAirService {
     }
 
     //Entity -> Dto 메서드
-    default RealTimeAirDto ToDto(RealTimeAirEntity entity) {
-        RealTimeAirDto dto = RealTimeAirDto.builder()
+    default RealTimeAirDTO ToDto(RealTimeAirEntity entity) {
+        RealTimeAirDTO dto = RealTimeAirDTO.builder()
                 .stationName(entity.getStationName())
                 .dataTime(entity.getDataTime())
                 .so2Grade(entity.getSo2Grade())
