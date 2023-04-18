@@ -1,5 +1,6 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
+import com.weatherwhere.airservice.dto.AddrDto;
 import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -52,6 +53,42 @@ public class ParseCSVServiceImpl implements ParseCSVService {
         }
 
         return stationNames;
+    }
+
+    @Override
+    public List<AddrDto> addrParseCSV() {
+        ClassPathResource resource = new ClassPathResource("change_addr.csv");
+        List<AddrDto> addrList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
+
+            boolean flag = false;
+
+            while (true) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+
+                // 첫 줄을 읽지 않음
+                if (flag == false) {
+                    flag = true;
+                    continue;
+                }
+
+                String[] data = line.split(",");
+                AddrDto addrDto = AddrDto.builder()
+                        .city(data[0])
+                        .regionName(data[1])
+                        .build();
+
+                addrList.add(addrDto);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+
+        return addrList;
     }
 }
 
