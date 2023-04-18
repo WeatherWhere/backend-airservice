@@ -22,10 +22,10 @@ public class TourRankAirDataServiceImpl implements TourRankAirDataService {
     private final GetTmXYAndStationService getTmXYAndStationService;
     private final RealTimeAirRepository realTimeAirRepository;
 
-    private String getGrade(int pm10Grade) {
+    private String getGrade(int Grade) {
         String grade ="";
 
-        switch (pm10Grade) {
+        switch (Grade) {
             case 1 :
                 grade = "좋음";
                 break;
@@ -60,11 +60,14 @@ public class TourRankAirDataServiceImpl implements TourRankAirDataService {
 
         // 등급 조회
         String pm10Grade = getGrade(realTimeAirEntity.getPm10Grade());
+        String pm25Grade = getGrade(realTimeAirEntity.getPm25Grade());
 
         TourAirRealTimeDataDTO tourAirRealTimeDataDTO = TourAirRealTimeDataDTO.builder()
             .dataTime(realTimeAirEntity.getDataTime())
             .stationName(realTimeAirEntity.getStationName())
             .pm10Grade(pm10Grade)
+            .pm10Value(realTimeAirEntity.getPm10Value())
+            .pm25Value(realTimeAirEntity.getPm25Value())
             .build();
         log.info("tourAirRealTimeDataDTO : {}", tourAirRealTimeDataDTO);
         return ResultDTO.of(HttpStatus.OK.value(), "Tour - 실시간 대기정보를 조회하는데 성공하였습니다.", tourAirRealTimeDataDTO);
