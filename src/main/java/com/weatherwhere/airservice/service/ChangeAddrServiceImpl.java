@@ -25,7 +25,6 @@ public class ChangeAddrServiceImpl implements ChangeAddrService{
     @Cacheable("addrList")
     public String changeAddr(String addr) {
         List<AddrDto> addrList = parseCSVService.addrParseCSV();
-        System.out.println(addrList);
         String line = addr;
         String[] data = line.split(" ");
         String regex = ".{1}$";
