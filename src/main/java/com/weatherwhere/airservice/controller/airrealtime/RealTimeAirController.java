@@ -1,5 +1,11 @@
 package com.weatherwhere.airservice.controller.airrealtime;
 
+import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.ResultDto;
+import com.weatherwhere.airservice.service.airrealtime.RealTimeAirService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import java.text.ParseException;
 import java.util.List;
 
@@ -25,11 +31,6 @@ public class RealTimeAirController {
     private final RealTimeAirService realTimeAirService;
     private final TourRankAirDataService tourRankAirDataService;
 
-    //DB 업데이트
-    @GetMapping("/api")
-    public Object updateRealtimeAirDate() throws ParseException, org.json.simple.parser.ParseException {
-        return realTimeAirService.updateRealtimeAirDate();
-    }
 
     // 경도 x, y 받아서 가까운 측정소 검색 후 그 측정소의 정보를 DB에서 가져와 보여줌
     @GetMapping("/data")
