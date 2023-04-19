@@ -132,6 +132,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
         return realTimeAirEntityList;
     }
 
+
     //DB에서 데이터 가져오기
     @Override
     @Transactional
