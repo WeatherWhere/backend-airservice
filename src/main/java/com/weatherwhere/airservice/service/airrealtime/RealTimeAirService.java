@@ -1,12 +1,13 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
-import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
-import jakarta.transaction.Transactional;
-
 import java.text.ParseException;
 import java.util.List;
+
+import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+
+import jakarta.transaction.Transactional;
 
 public interface RealTimeAirService {
 

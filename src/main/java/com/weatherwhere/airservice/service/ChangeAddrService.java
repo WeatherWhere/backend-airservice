@@ -1,8 +1,11 @@
 package com.weatherwhere.airservice.service;
 
-import com.weatherwhere.airservice.dto.ResultDto;
+import java.util.List;
+
+import com.weatherwhere.airservice.dto.ResultDTO;
+import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;
 
 public interface ChangeAddrService {
     String changeAddr(String addr);
-    ResultDto<Object> getTest(String addr, String baseDate) throws Exception;
+    ResultDTO<List<AirForecastDTO>> getTest(String addr, String baseDate) throws Exception;
 }

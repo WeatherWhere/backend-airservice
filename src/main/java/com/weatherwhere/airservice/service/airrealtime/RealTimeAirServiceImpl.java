@@ -1,24 +1,9 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
-import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.ResultDto;
-import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
-
-import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
-import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
-import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -26,8 +11,25 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.ResultDTO;
+import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
+import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
+import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
@@ -82,7 +84,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     public List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList) {
         List<RealTimeAirEntity> realTimeAirEntityList = new ArrayList<>();
         Integer dtoListLength = stationNameDtoList.size();
-        RealTimeAirDto realTimeAirDto;
+        RealTimeAirDTO realTimeAirDto;
         String stationName = "";
         for (int i = 0; i < dtoListLength; i++ ) {
             try {
@@ -92,7 +94,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
                 JSONObject json = (JSONObject) realTimeAirData;
 
-                realTimeAirDto = RealTimeAirDto.builder()
+                realTimeAirDto = RealTimeAirDTO.builder()
                         .stationName(stationName)
                         .dataTime(LocalDateTime.parse((CharSequence) json.get("dataTime"), dateFormatter))
                         .so2Grade(Integer.parseInt((String) json.get("so2Grade")))
@@ -136,12 +138,12 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     //DB에서 데이터 가져오기
     @Override
     @Transactional
-    public ResultDto<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+    public ResultDTO<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
         List<RealTimeAirEntity> List = new ArrayList<>();
         String stationName = getTmXYAndStationService.getStationName(x, y);
         RealTimeAirEntity result = realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
         List.add(result);
-        return ResultDto.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
+        return ResultDTO.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
     }
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드
