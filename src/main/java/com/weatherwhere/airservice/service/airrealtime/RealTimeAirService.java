@@ -16,7 +16,7 @@ public interface RealTimeAirService {
     //엔티티 리스트를 만들어주는 메서드
     @Transactional
     List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList);
-    
+
     //x, y 좌표 받아서 DB에서 해당하는 대기정보 보여주는 메서드
     Object getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException;
 

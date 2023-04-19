@@ -3,6 +3,7 @@ package com.weatherwhere.airservice.controller.airforecast;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.weatherwhere.airservice.service.ChangeAddrService;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +26,10 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class AirForecastController {
     private final AirForecastApiService airForecastService;
+
+    private final ChangeAddrService changeAddrService;
+
+
     private final GetAirForecastDataService getAirForecastDataService;
     // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
@@ -33,11 +38,11 @@ public class AirForecastController {
         return airForecastService.getApiData(date);
     }
 
-    // 5일의 대기 주간예보 데이터 가져오기!
-    @GetMapping(value = "/data")
-    public ResultDTO<List<AirForecastDTO>> getFiveDaysAirForecastData(@ModelAttribute SearchAirForecastDTO searchAirForecastDto) throws
-        Exception {
-        return getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto);
-    }
 
+    // 7일의 대기 주간예보 데이터 주소와 베이스타임으로 가져오기!
+    @GetMapping("/data")
+    public ResultDto<Object> getsevendata(@RequestParam String addr, String baseDate) throws Exception {
+        return changeAddrService.getTest(addr, baseDate);
+    }
 }
+
