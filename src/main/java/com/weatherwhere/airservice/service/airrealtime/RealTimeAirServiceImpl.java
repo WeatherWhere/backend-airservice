@@ -4,6 +4,7 @@ import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.ResultDto;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
 import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
 import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
 import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
@@ -25,6 +26,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2

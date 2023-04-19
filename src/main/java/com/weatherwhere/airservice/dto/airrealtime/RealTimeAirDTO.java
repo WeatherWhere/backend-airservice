@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RealTimeAirDto {
+public class RealTimeAirDTO {
     private String stationName;
     private LocalDateTime dataTime;
     private int so2Grade;

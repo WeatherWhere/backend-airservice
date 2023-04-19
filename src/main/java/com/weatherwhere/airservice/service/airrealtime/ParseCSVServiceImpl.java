@@ -1,6 +1,8 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
+
 import com.weatherwhere.airservice.dto.AddrDto;
+
 import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -55,6 +57,7 @@ public class ParseCSVServiceImpl implements ParseCSVService {
         return stationNames;
     }
 
+
     @Override
     public List<AddrDto> addrParseCSV() {
         ClassPathResource resource = new ClassPathResource("change_addr.csv");
@@ -90,5 +93,6 @@ public class ParseCSVServiceImpl implements ParseCSVService {
 
         return addrList;
     }
+
 }
 
