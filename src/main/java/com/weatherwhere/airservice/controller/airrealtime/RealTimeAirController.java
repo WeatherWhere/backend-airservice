@@ -1,13 +1,5 @@
 package com.weatherwhere.airservice.controller.airrealtime;
 
-import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.ResultDto;
-import com.weatherwhere.airservice.service.airrealtime.RealTimeAirService;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;

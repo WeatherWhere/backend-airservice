@@ -68,6 +68,7 @@ public class TourRankAirDataServiceImpl implements TourRankAirDataService {
             .pm10Grade(pm10Grade)
             .pm10Value(realTimeAirEntity.getPm10Value())
             .pm25Value(realTimeAirEntity.getPm25Value())
+            .pm25Grade(pm25Grade)
             .build();
         log.info("tourAirRealTimeDataDTO : {}", tourAirRealTimeDataDTO);
         return ResultDTO.of(HttpStatus.OK.value(), "Tour - 실시간 대기정보를 조회하는데 성공하였습니다.", tourAirRealTimeDataDTO);
