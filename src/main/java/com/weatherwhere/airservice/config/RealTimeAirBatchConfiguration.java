@@ -1,7 +1,7 @@
 package com.weatherwhere.airservice.config;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 import com.weatherwhere.airservice.service.airrealtime.ParseCSVService;
 import com.weatherwhere.airservice.service.airrealtime.RealTimeAirService;
 import jakarta.persistence.EntityManagerFactory;
@@ -30,7 +30,7 @@ public class RealTimeAirBatchConfiguration {
     private final RealTimeAirService realTimeAirService;
     private final ParseCSVService parseCSVService;
 
-    private List<StationNameDto> stationNameDtoList = new ArrayList<>();
+    private List<StationNameDTO> stationNameDtoList = new ArrayList<>();
     private List<RealTimeAirEntity> collectData = new ArrayList<>();
     private int index;
 

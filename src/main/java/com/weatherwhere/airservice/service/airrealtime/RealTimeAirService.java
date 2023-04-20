@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
-
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
+import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional;
 
 public interface RealTimeAirService {
@@ -16,7 +16,7 @@ public interface RealTimeAirService {
 
     //엔티티 리스트를 만들어주는 메서드
     @Transactional
-    List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList);
+    List<RealTimeAirEntity> makeEntityList(List<StationNameDTO> stationNameDtoList);
 
     //x, y 좌표 받아서 DB에서 해당하는 대기정보 보여주는 메서드
     Object getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException;

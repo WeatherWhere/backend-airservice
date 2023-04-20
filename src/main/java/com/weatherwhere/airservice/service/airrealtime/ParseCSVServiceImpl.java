@@ -1,9 +1,9 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
 
-import com.weatherwhere.airservice.dto.AddrDto;
+import com.weatherwhere.airservice.dto.AddrDTO;
 
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.ClassPathResource;
@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParseCSVServiceImpl implements ParseCSVService {
     @Override
-    public List<StationNameDto> ParseCSV() {
+    public List<StationNameDTO> ParseCSV() {
         ClassPathResource resource = new ClassPathResource("station_list.csv");
-        List<StationNameDto> stationNames = new ArrayList<>();
+        List<StationNameDTO> stationNames = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
 
             boolean flag = false;
@@ -41,11 +41,11 @@ public class ParseCSVServiceImpl implements ParseCSVService {
 
                 String[] data = line.split(",");
 
-                StationNameDto stationNameDto = StationNameDto.builder()
+                StationNameDTO stationNameDTO = StationNameDTO.builder()
                         .stationName(data[1])
                         .build();
 
-                stationNames.add(stationNameDto);
+                stationNames.add(stationNameDTO);
             }
 
 
@@ -59,9 +59,9 @@ public class ParseCSVServiceImpl implements ParseCSVService {
 
 
     @Override
-    public List<AddrDto> addrParseCSV() {
+    public List<AddrDTO> addrParseCSV() {
         ClassPathResource resource = new ClassPathResource("change_addr.csv");
-        List<AddrDto> addrList = new ArrayList<>();
+        List<AddrDTO> addrList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
 
             boolean flag = false;
@@ -79,12 +79,12 @@ public class ParseCSVServiceImpl implements ParseCSVService {
                 }
 
                 String[] data = line.split(",");
-                AddrDto addrDto = AddrDto.builder()
+                AddrDTO addrDTO = AddrDTO.builder()
                         .city(data[0])
                         .regionName(data[1])
                         .build();
 
-                addrList.add(addrDto);
+                addrList.add(addrDTO);
             }
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

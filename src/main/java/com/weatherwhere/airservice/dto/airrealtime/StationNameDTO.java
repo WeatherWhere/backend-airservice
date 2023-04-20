@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StationNameDto {
+public class StationNameDTO {
     private String stationName;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddrDto {
+public class AddrDTO {
     String regionName;
     String city;
 }

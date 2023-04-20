@@ -1,17 +1,16 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
+import com.weatherwhere.airservice.dto.ResultDTO;
+import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 
+import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
+import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
+import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,17 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.ResultDTO;
-import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
-import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
-import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
-import com.weatherwhere.airservice.service.GetTmXYAndStationServiceImpl;
-
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Log4j2
@@ -81,10 +77,10 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
     //받아온 데이터 EntityList
     @Override
-    public List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList) {
+    public List<RealTimeAirEntity> makeEntityList(List<StationNameDTO> stationNameDtoList) {
         List<RealTimeAirEntity> realTimeAirEntityList = new ArrayList<>();
         Integer dtoListLength = stationNameDtoList.size();
-        RealTimeAirDTO realTimeAirDto;
+        RealTimeAirDTO realTimeAirDTO;
         String stationName = "";
         for (int i = 0; i < dtoListLength; i++ ) {
             try {
@@ -94,7 +90,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
                 JSONObject json = (JSONObject) realTimeAirData;
 
-                realTimeAirDto = RealTimeAirDTO.builder()
+                realTimeAirDTO = RealTimeAirDTO.builder()
                         .stationName(stationName)
                         .dataTime(LocalDateTime.parse((CharSequence) json.get("dataTime"), dateFormatter))
                         .so2Grade(Integer.parseInt((String) json.get("so2Grade")))
@@ -113,7 +109,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
                         .khaiGrade(Integer.parseInt((String) json.get("khaiGrade")))
                         .build();
 
-                realTimeAirEntityList.add(ToEntity(realTimeAirDto));
+                realTimeAirEntityList.add(ToEntity(realTimeAirDTO));
 
                 //log.info("실시간 대기정보 호출 데이터:{}", realTimeAirEntityList);
             } catch (IndexOutOfBoundsException e) {

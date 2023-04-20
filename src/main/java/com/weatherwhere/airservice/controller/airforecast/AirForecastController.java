@@ -27,7 +27,6 @@ public class AirForecastController {
 
     private final ChangeAddrService changeAddrService;
 
-
     private final GetAirForecastDataService getAirForecastDataService;
     // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
@@ -39,8 +38,8 @@ public class AirForecastController {
 
     // 5일의 대기 주간예보 데이터 주소와 베이스타임으로 가져오기!
     @GetMapping("/data")
-    public ResultDTO<List<AirForecastDTO>> getFiveDaysdata(@RequestParam String addr, String baseDate) throws Exception {
-        return changeAddrService.getTest(addr, baseDate);
+    public ResultDTO<List<AirForecastDTO>> getFiveDaysData(@RequestParam String addr, String baseDate) throws Exception {
+        return changeAddrService.getFiveDaysData(addr, baseDate);
     }
 }
 
