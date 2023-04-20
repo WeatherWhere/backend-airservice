@@ -1,9 +1,9 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
-import com.weatherwhere.airservice.dto.ResultDto;
-import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDto;
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+import com.weatherwhere.airservice.dto.ResultDTO;
+import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
 import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
@@ -26,8 +26,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -79,10 +77,10 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
     //받아온 데이터 EntityList
     @Override
-    public List<RealTimeAirEntity> makeEntityList(List<StationNameDto> stationNameDtoList) {
+    public List<RealTimeAirEntity> makeEntityList(List<StationNameDTO> stationNameDtoList) {
         List<RealTimeAirEntity> realTimeAirEntityList = new ArrayList<>();
         Integer dtoListLength = stationNameDtoList.size();
-        RealTimeAirDto realTimeAirDto;
+        RealTimeAirDTO realTimeAirDTO;
         String stationName = "";
         for (int i = 0; i < dtoListLength; i++ ) {
             try {
@@ -92,7 +90,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
                 JSONObject json = (JSONObject) realTimeAirData;
 
-                realTimeAirDto = RealTimeAirDto.builder()
+                realTimeAirDTO = RealTimeAirDTO.builder()
                         .stationName(stationName)
                         .dataTime(LocalDateTime.parse((CharSequence) json.get("dataTime"), dateFormatter))
                         .so2Grade(Integer.parseInt((String) json.get("so2Grade")))
@@ -111,7 +109,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
                         .khaiGrade(Integer.parseInt((String) json.get("khaiGrade")))
                         .build();
 
-                realTimeAirEntityList.add(ToEntity(realTimeAirDto));
+                realTimeAirEntityList.add(ToEntity(realTimeAirDTO));
 
                 //log.info("실시간 대기정보 호출 데이터:{}", realTimeAirEntityList);
             } catch (IndexOutOfBoundsException e) {
@@ -136,12 +134,12 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     //DB에서 데이터 가져오기
     @Override
     @Transactional
-    public ResultDto<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+    public ResultDTO<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
         List<RealTimeAirEntity> List = new ArrayList<>();
         String stationName = getTmXYAndStationService.getStationName(x, y);
         RealTimeAirEntity result = realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
         List.add(result);
-        return ResultDto.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
+        return ResultDTO.of(HttpStatus.OK.value(), "실시간 대기정보를 조회하는데 성공하였습니다.", List);
     }
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드

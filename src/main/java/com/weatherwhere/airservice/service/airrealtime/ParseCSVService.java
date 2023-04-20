@@ -1,15 +1,15 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
 
-import com.weatherwhere.airservice.dto.AddrDto;
+import com.weatherwhere.airservice.dto.AddrDTO;
 
-import com.weatherwhere.airservice.dto.airrealtime.StationNameDto;
+import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 
 import java.util.List;
 
 public interface ParseCSVService {
-    List<StationNameDto> ParseCSV();
+    List<StationNameDTO> ParseCSV();
 
-    List<AddrDto> addrParseCSV();
+    List<AddrDTO> addrParseCSV();
 
 }
