@@ -26,7 +26,6 @@ import lombok.extern.log4j.Log4j2;
 public class RealTimeAirController {
     private final RealTimeAirService realTimeAirService;
     private final TourRankAirDataService tourRankAirDataService;
-    private final ChangeAddrService changeAddrService;
 
 
     // 경도 x, y 받아서 가까운 측정소 검색 후 그 측정소의 정보를 DB에서 가져와 보여줌
