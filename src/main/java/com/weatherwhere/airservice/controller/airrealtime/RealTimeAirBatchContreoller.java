@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/batch")
+@RequestMapping("/air/batch")
 @RequiredArgsConstructor
 public class RealTimeAirBatchContreoller {
     private final RealTimeAirBatchConfiguration realTimeAirBatchConfiguration;
