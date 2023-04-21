@@ -46,7 +46,7 @@ public class AitForecastTests {
         System.out.println("date:     "+date);
 
         // 아직 임시로 print하고 나중에 response에 성공여부 출력해보기
-        System.out.println(airForecastApiService.getApiData(date));
+        //System.out.println(airForecastApiService.getApiData(date));
        // Assertions.assertEquals();
     }
 
@@ -56,7 +56,7 @@ public class AitForecastTests {
         SearchAirForecastDTO searchAirForecastDto=new SearchAirForecastDTO(date,"서울");
 
         // 아직 임시로 print하고 나중에 response에 성공여부 출력해보기
-        System.out.println(getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto));
+        //System.out.println(getAirForecastDataService.getFiveDaysDataOfLocation(searchAirForecastDto));
         // Assertions.assertEquals();
     }
 }
