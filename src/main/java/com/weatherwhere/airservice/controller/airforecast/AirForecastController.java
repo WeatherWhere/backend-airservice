@@ -30,8 +30,10 @@ public class AirForecastController {
     private final GetAirForecastDataService getAirForecastDataService;
     // 공공데이터 api 호출해서 db에 저장
     @GetMapping(value = "/api")
-    public ResultDTO<List<AirForecastDTO>> getAirForecastApiData (@RequestParam LocalDate date) throws
+    public ResultDTO<List<AirForecastDTO>> getAirForecastApiData () throws
         ParseException, java.text.ParseException {
+        // 대기 주간예보 업데이트: 오후 5시30분이므로 전날 데이터 저장
+        LocalDate date = LocalDate.now().minusDays(1);
         return airForecastService.getApiData(date);
     }
 
