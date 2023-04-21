@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/batch")
+@RequestMapping("/air")
 @RequiredArgsConstructor
 public class RealTimeAirBatchContreoller {
     private final RealTimeAirBatchConfiguration realTimeAirBatchConfiguration;
@@ -28,7 +28,7 @@ public class RealTimeAirBatchContreoller {
     public void setrealtimeJob(Job job) {
         this.job = job;
     }
-    @GetMapping("/realtime")
+    @GetMapping("/batch/realtime")
     public String RealTimeAirStartBatch() throws Exception {
         Long startTime = System.currentTimeMillis();
         realTimeAirBatchConfiguration.initialize();
