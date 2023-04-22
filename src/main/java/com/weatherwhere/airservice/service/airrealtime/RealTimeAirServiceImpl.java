@@ -45,13 +45,13 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
         JSONObject item = ((JSONObject) items.get(0));
 
-        // item의 요소들의 값이 "-" 이나 null일때 "0"을 넣어줌
+        // item의 요소들의 값이 "-" 이나 null일때 "-1"을 넣어줌
         // 다른 값을 넣을게 있다면 그걸 넣겠음
         for (Object key : item.keySet()) {
             Object value = item.get(key);
 
             if (value == null || value.toString().equals("-")) {
-                item.put(key.toString(), "0");
+                item.put(key.toString(), "-1");
             }
         }
         return item;
@@ -81,12 +81,14 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
         Integer dtoListLength = stationNameDtoList.size();
         RealTimeAirDTO realTimeAirDTO;
         String stationName = "";
+
+
         for (int i = 0; i < dtoListLength; i++ ) {
+
             try {
                 stationName = stationNameDtoList.get(i).getStationName();
                 Object realTimeAirData = getRealTimeAirData(stationName);
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
                 JSONObject json = (JSONObject) realTimeAirData;
 
                 realTimeAirDTO = RealTimeAirDTO.builder()
@@ -115,6 +117,25 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
                 // 공공데이터 api에 없는 정보 호출했을 경우
                 e.printStackTrace();
                 log.error("IndexOutOfBoundsException이 발생", stationName);
+                // -1 값을 넣어줌
+                realTimeAirDTO = RealTimeAirDTO.builder()
+                        .stationName(stationName)
+                        .so2Grade(-1)
+                        .so2Value(-1.0)
+                        .coValue(-1.0)
+                        .o3Value(-1.0)
+                        .no2Value(-1.0)
+                        .pm10Value(-1)
+                        .pm25Value(-1)
+                        .khaiValue(-1)
+                        .coGrade(-1)
+                        .o3Grade(-1)
+                        .no2Grade(-1)
+                        .pm10Grade(-1)
+                        .pm25Grade(-1)
+                        .khaiGrade(-1)
+                        .build();
+                realTimeAirEntityList.add(ToEntity(realTimeAirDTO));
             } catch (Exception e) {
                 if (e instanceof org.json.simple.parser.ParseException) {
                     // json 데이터 파싱할 때 error

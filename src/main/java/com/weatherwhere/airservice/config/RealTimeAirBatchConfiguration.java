@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class RealTimeAirBatchConfiguration {
     private final RealTimeAirService realTimeAirService;
     private final ParseCSVService parseCSVService;
 
-    private List<StationNameDTO> stationNameDtoList = new ArrayList<>();
-    private List<RealTimeAirEntity> collectData = new ArrayList<>();
+    private List<StationNameDTO> stationNameDtoList;
+    private List<RealTimeAirEntity> collectData;
     private int index;
 
     public void initialize() {
