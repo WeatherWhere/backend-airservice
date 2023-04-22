@@ -67,8 +67,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
                 "&pageNo=1" +
                 "&numOfRows=1" +
                 "&returnType=json" +
-                "&serviceKey=LKiVUvMq5P2zZ88FZoOq/h0k9y98k2pEdRcJSheoYPwZxYlcaGkQugApuMndBS0dqRg1QeziMPwW9rbVvRIcRA==" +
-                //System.getProperty("AIR_FORECAST_SERVICE_KEY_DE") +
+                "&serviceKey=" + System.getProperty("AIR_FORECAST_SERVICE_KEY_DE") +
                 "&ver=1.0";
         String jsonString = restTemplate.getForObject(apiUrl, String.class);
         Object result = JsonParser(jsonString);
