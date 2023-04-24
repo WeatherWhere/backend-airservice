@@ -1,7 +1,7 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
 
-import com.weatherwhere.airservice.dto.AddrDTO;
+import com.weatherwhere.airservice.dto.airforecast.AddrDTO;
 
 import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 

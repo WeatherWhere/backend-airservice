@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.service;
+package com.weatherwhere.airservice.service.airforecast;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,11 +7,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.weatherwhere.airservice.dto.AddrDTO;
+import com.weatherwhere.airservice.dto.airforecast.AddrDTO;
 import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;
 import com.weatherwhere.airservice.dto.airforecast.SearchAirForecastDTO;
-import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
 import com.weatherwhere.airservice.service.airrealtime.ParseCSVService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class ChangeAddrServiceImpl implements ChangeAddrService{
+public class ChangeAddrServiceImpl implements ChangeAddrService {
     private final ParseCSVService parseCSVService;
     private final GetAirForecastDataService getAirForecastDataService;
 
@@ -34,7 +33,7 @@ public class ChangeAddrServiceImpl implements ChangeAddrService{
 
         if (addr.contains("서울")) {
             result = data[0];;
-        }else {
+        } else {
             String regex = ".{1}$";
             result = data[1].replaceAll(regex, "");
         }
