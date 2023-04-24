@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.service;
+package com.weatherwhere.airservice.service.airforecast;
 
 import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;

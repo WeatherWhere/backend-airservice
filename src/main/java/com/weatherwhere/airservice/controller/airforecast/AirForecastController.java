@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.dto.airforecast.AirForecastDTO;
-import com.weatherwhere.airservice.service.ChangeAddrService;
+import com.weatherwhere.airservice.service.airforecast.ChangeAddrService;
 import com.weatherwhere.airservice.service.airforecast.AirForecastApiService;
 import com.weatherwhere.airservice.service.airforecast.GetAirForecastDataService;
 
@@ -31,7 +31,6 @@ public class AirForecastController {
     // 공공데이터 api 호출해서 db에 저장
 
     @GetMapping(value = "/update")
-
     public ResultDTO<List<AirForecastDTO>> getAirForecastApiData () throws
         ParseException, java.text.ParseException {
         // 대기 주간예보 업데이트: 오후 5시30분이므로 전날 데이터 저장

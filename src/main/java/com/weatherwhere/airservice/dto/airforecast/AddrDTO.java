@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.dto;
+package com.weatherwhere.airservice.dto.airforecast;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
