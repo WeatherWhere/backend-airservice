@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.service;
+package com.weatherwhere.airservice.service.airrealtime;
 
 import java.net.URI;
 
@@ -13,13 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.weatherwhere.airservice.service.airrealtime.GetTmXYAndStationService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
+public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService {
 
     // kakao 좌표계 변환 api url
     // https://developers.kakao.com/docs/latest/ko/local/dev-guide#trans-coord

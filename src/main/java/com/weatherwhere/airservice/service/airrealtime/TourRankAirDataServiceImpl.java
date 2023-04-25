@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.service.tour;
+package com.weatherwhere.airservice.service.airrealtime;
 
 import java.util.NoSuchElementException;
 
@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.ResultDTO;
-import com.weatherwhere.airservice.dto.tour.TourAirRealTimeDataDTO;
+import com.weatherwhere.airservice.dto.airrealtime.TourAirRealTimeDataDTO;
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
-import com.weatherwhere.airservice.service.GetTmXYAndStationService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

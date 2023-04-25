@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.dto.tour;
+package com.weatherwhere.airservice.dto.airrealtime;
 
 import java.time.LocalDateTime;
 
