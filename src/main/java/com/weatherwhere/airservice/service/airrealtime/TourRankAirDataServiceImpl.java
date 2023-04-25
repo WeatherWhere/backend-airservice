@@ -21,6 +21,12 @@ public class TourRankAirDataServiceImpl implements TourRankAirDataService {
     private final GetTmXYAndStationService getTmXYAndStationService;
     private final RealTimeAirRepository realTimeAirRepository;
 
+    /**
+     * 미세먼지, 초미세먼지 등급의 값을 숫자에서 문자로 변환한 문자열을 리턴합니다.
+     *
+     * @param Grade 미세먼지 or 초미세먼지 등급
+     * @return 숫자 등급에서 문자 등급으로 변환한 문자열을 리턴
+     */
     private String getGrade(int Grade) {
         String grade ="";
 
@@ -44,7 +50,13 @@ public class TourRankAirDataServiceImpl implements TourRankAirDataService {
         return grade;
     }
 
-    // 위경도를 바탕으로 tour에 필요한 대기 실시간 DB 데이터 호출
+    /**
+     * 경도 x, 위도 y에 해당하는 대기 실시간 데이터를 DB에서 조회한 값을 투어에서 사용할  ResultDTO<TourAirRealTimeDataDTO>로 리턴합니다.
+     *
+     * @param x 조회할 경도
+     * @param y 조회할 위도
+     * @return DB에서 해당 대기 실시간 데이터를 조회했다면 ResultDTO<TourAirRealTimeDataDTO> 리턴
+     */
     @Override
     @Transactional
     public ResultDTO<TourAirRealTimeDataDTO> getRealTimeAirDBData(Double x, Double y) {
