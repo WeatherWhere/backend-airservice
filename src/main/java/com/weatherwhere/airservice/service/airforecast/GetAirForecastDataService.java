@@ -9,16 +9,20 @@ import com.weatherwhere.airservice.dto.ResultDTO;
 
 public interface GetAirForecastDataService {
 
-    // 해당 위치 5일 대기오염 주간예보 DB 가져오기
-    // startDate에서 필요한 형식은 yyyy-MM-dd
-    ResultDTO<List<AirForecastDTO>> getFiveDaysDataOfLocation(SearchAirForecastDTO searchAirForecastDto) throws Exception;
+    /**
+     * 해당 날짜와 지역에 해당하는 5일의 주간예보를 DB에서 조회하고 ResultDTO<List<AirForecastDTO>>를 리턴합니다.
+     *
+     * @param searchAirForecastDto DB에서 조회할 찾을 시작 날짜와 지역
+     * @return DB에서 5일의 주간예보를 조회하는데 성공한다면 ResultDTO<List<AirForecastDTO>> 리턴
+     */
+    ResultDTO<List<AirForecastDTO>> getFiveDaysDataOfLocation(SearchAirForecastDTO searchAirForecastDto);
 
-    /*
-    // 하루 주간예보 가져오기
-    ResultDTO<AirForecastDTO> getAirForecastOneDay(SearchAirForecastDTO searchAirForecastDto);
-    */
-
-    // Entity->DTO
+    /**
+     * 대기 주간예보 Entity를 DTO로 변환하여 AirForecastDTO를 리턴합니다.
+     *
+     * @param airForecastEntity 변환할 AirForecastEntity
+     * @return 대기 주간예보 Entity를 DTO로 변환한 AirForecastDTO를 리턴
+     */
     default AirForecastDTO entityToDto(AirForecastEntity airForecastEntity){
         AirForecastDTO airForecastDto= AirForecastDTO.builder()
             .forecast(airForecastEntity.getForecast())

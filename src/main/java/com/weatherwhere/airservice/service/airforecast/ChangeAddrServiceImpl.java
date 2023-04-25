@@ -23,6 +23,13 @@ public class ChangeAddrServiceImpl implements ChangeAddrService {
     private final ParseCSVService parseCSVService;
     private final GetAirForecastDataService getAirForecastDataService;
 
+
+    /**
+     * 문자열의 행정동 주소를 주간예보에서 검색이 가능한 도(시) 주소로 변환한 문자열을 리턴합니다.
+     *
+     * @param addr 행정동까지의 주소
+     * @return 행정동 주소를 도(시)주소로 변환한 주소를 리턴
+     */
     @Override
     @Cacheable("addrList")
     public String changeAddr(String addr) {
@@ -30,7 +37,7 @@ public class ChangeAddrServiceImpl implements ChangeAddrService {
         String line = addr;
         String result = null;
         String[] data = line.split(" ");
-
+        String changeAddress = "";
         if (addr.contains("서울")) {
             result = data[0];;
         } else {
@@ -40,12 +47,21 @@ public class ChangeAddrServiceImpl implements ChangeAddrService {
 
         for (AddrDTO addrDTO : addrList) {
             if (result.equals(addrDTO.getCity())) {
-               return addrDTO.getRegionName();
+               changeAddress = addrDTO.getRegionName();
             }
         }
-        return null;
+        return changeAddress;
     }
 
+
+    /**
+     * 변환한 주소와 검색할 날짜부터 DB에서 5일의 주간 예보 데이터를 조회하여 ResultDTO<List<AirForecastDTO>>를 리턴합니다.
+     *
+     * @param addr 도(시) 주소
+     * @param baseDate 오늘 날짜
+     * @return 5일의 주간 예보 데이터를 db에서 조회하는데 성공했다면 ResultDTO<List<AirForecastDTO>> 리턴, 그렇지 않다면 예외처리
+     * @throws Exception
+     */
     @Override
     public ResultDTO<List<AirForecastDTO>> getFiveDaysData(String addr, String baseDate) throws Exception {
         String city = changeAddr(addr);
