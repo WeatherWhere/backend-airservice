@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
+/**
+ * DB에 baseDate와 city를 기준으로 저장하거나 조회할 대기 주간 예보 DTO
+ */
 public class AirForecastDTO {
     private LocalDate baseDate;
     private String city;
