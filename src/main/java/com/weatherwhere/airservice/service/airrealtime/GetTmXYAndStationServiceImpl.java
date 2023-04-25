@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.weatherwhere.airservice.service.airrealtime.GetTmXYAndStationService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -103,7 +101,7 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService {
      * @param y 위도
      * @return 위경도에 해당하는 tmX, tmY 좌표를 리턴, 그렇지 않으면 예외 처리
      */
-    private Double[] TmXYApi(Double x, Double y) {
+    private Double[] tmXYApi(Double x, Double y) {
         String url = makeKaKaoApiUrl(x,y);
         Double[] result = new Double[2];
         try {
@@ -156,7 +154,7 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService {
     @Override
     public String getStationName(Double x, Double y) {
         // 메서드 getTmXY를 사용하여 경도 x, 위도 y로 tmX, tmY로 변환하기
-        Double [] tmXY = TmXYApi(x,y); // tmXY[0]: tmX, tmXY[1]: tmY
+        Double [] tmXY = tmXYApi(x,y); // tmXY[0]: tmX, tmXY[1]: tmY
         String stationName = getStationNameApiByTmXY(tmXY[0], tmXY[1]);
         return stationName;
     }
