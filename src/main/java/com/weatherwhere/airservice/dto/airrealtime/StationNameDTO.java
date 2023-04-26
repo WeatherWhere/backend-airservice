@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * CSV 파일로 부터 지역이름을 파싱한 데이터를 DTO로 생성
+ */
 public class StationNameDTO {
     private String stationName;
 }

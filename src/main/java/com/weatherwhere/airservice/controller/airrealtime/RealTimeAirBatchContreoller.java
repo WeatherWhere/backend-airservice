@@ -22,12 +22,23 @@ public class RealTimeAirBatchContreoller {
 
     private Job job;
 
-    //특정 job만 실행시키기 위해 Qualifier어노테이션 사용 후 setJob해주기
+    /**
+     * 특정 job만 실행시키키 위해서 Qualifier 어노테이션 사용후 setJob 설정
+     *
+     * @param job
+     */
     @Autowired
     @Qualifier("realtimeJob")
     public void setrealtimeJob(Job job) {
         this.job = job;
     }
+
+    /**
+     * 실시간 대기 정보 Batch 돌리는 api
+     *
+     * @return Batch 작업이 성공적으로 수행됐음을 알리는 String 리턴
+     * @throws Exception
+     */
     @GetMapping("/batch/realtime")
     public String RealTimeAirStartBatch() throws Exception {
         Long startTime = System.currentTimeMillis();

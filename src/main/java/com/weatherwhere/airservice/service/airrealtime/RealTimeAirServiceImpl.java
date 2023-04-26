@@ -17,9 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,7 +31,13 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     private final RealTimeAirRepository realTimeAirRepository;
     private final GetTmXYAndStationServiceImpl getTmXYAndStationService;
 
-    //JSON 파싱
+    /**
+     * Open API로부터 받아온 JSON 문자열을 JSON으로 파싱하는 메서드로 JSONObject로 리턴
+     *
+     * @param jsonString Open API를 통해 받아오는 JSON 형태의 문자열
+     * @return response.body.items.item의 첫번째 object를 JSONObject로 파싱하여 리턴
+     * @throws org.json.simple.parser.ParseException
+     */
     public Object JsonParser(String jsonString) throws org.json.simple.parser.ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonString);
@@ -57,9 +60,15 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
         return item;
     }
 
+    /**
+     * 실시간 대기정보 Open API를 호출하여 데이터를 파싱하고 리턴하는 메서드
+     *
+     * @param stationName 측정소 명
+     * @return 실시간 대기정보 result
+     * @throws org.json.simple.parser.ParseException
+     */
     @Override
-    //Open API에서 데이터 받아오고 파싱
-    public Object getRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException {
+    public Object getRealTimeAirData(String stationName) throws org.json.simple.parser.ParseException {
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty" +
                 "?stationName=" + stationName +
@@ -74,7 +83,13 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
         return result;
     }
 
-    //받아온 데이터 EntityList
+    /**
+     * DB에 저장할 실시간 대기정보 데이터들을 List<RealTimeAirEntity>로 리턴,
+     * IndexOutOfBoundsException이 발생하면 -1 값을 넣어 줌
+     *
+     * @param stationNameDtoList CSV 파일로부터 읽어온 측정소 명 리스트
+     * @return List<RealTimeAirEntity> 리턴, 실패하면 예외처리
+     */
     @Override
     public List<RealTimeAirEntity> makeEntityList(List<StationNameDTO> stationNameDtoList) {
         List<RealTimeAirEntity> realTimeAirEntityList = new ArrayList<>();
@@ -152,9 +167,18 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
 
     //DB에서 데이터 가져오기
+
+    /**
+     * 위경도 x, y의 값을 받아서 가까운 측정소 이름을 검색 후 그 측정소의 대기 정보를 DB에서 가져와서
+     * ResultDTO<List<RealTimeAirEntity>> 로 리턴합니다
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 실시간 대기정보 ResultDTO<List<RealTimeAirEntity>>
+     */
     @Override
     @Transactional
-    public ResultDTO<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException {
+    public ResultDTO<List<RealTimeAirEntity>> getRealTimeDBData(Double x, Double y) {
         List<RealTimeAirEntity> List = new ArrayList<>();
         String stationName = getTmXYAndStationService.getStationName(x, y);
         RealTimeAirEntity result = realTimeAirRepository.findById(stationName).orElseThrow(() -> new NoSuchElementException());
@@ -163,6 +187,7 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
     }
 
     //DB에 stationName을 csv에서 읽어와 저장하는 메서드
+    /*
     private final StationNameRepository stationNameRepository;
 
     public String readStationName() throws IOException {
@@ -179,5 +204,6 @@ public class RealTimeAirServiceImpl implements RealTimeAirService {
 
         return "성공";
     }
+     */
 
 }

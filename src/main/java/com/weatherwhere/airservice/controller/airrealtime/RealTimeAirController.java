@@ -26,16 +26,29 @@ public class RealTimeAirController {
     private final RealTimeAirService realTimeAirService;
     private final TourRankAirDataService tourRankAirDataService;
 
-
-    // 경도 x, y 받아서 가까운 측정소 검색 후 그 측정소의 정보를 DB에서 가져와 보여줌
+    /**
+     * 위경도 x, y의 값을 받아서 가까운 측정소 이름을 검색 후 그 측정소의 대기 정보를 DB에서 가져와서
+     * ResultDTO<List<RealTimeAirEntity>> 로 리턴합니다.
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 주어진 위경도 x, y에 해당하는 지역의 실시간 대기정보를 리턴, 실패시 예외처리
+     * @throws org.json.simple.parser.ParseException
+     */
     @GetMapping("/data")
     public ResultDTO<List<RealTimeAirEntity>> getRealTimeDBData(@RequestParam Double x, Double y) throws org.json.simple.parser.ParseException {
            ResultDTO<List<RealTimeAirEntity>> data = (ResultDTO<List<RealTimeAirEntity>>) realTimeAirService.getRealTimeDBData(x, y);
            return data;
     }
 
-    // 관광에서 쓸 api
-    // 위경도를 바탕으로 실시간 데이터 가져오기
+    /**
+     * 위경도 x, y의 값을 받아서 가까운 측정소 이름을 검색 후 그 측정소의 대기 정보를 DB에서 가져와서
+     * Tour Service에 ResultDTO<List<RealTimeAirEntity>> 로 리턴합니다.
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 주어진 위경도 x, y에 해당하는 지역의 실시간 대기정보를 리턴
+     */
     @GetMapping(value = "/tour/data")
     public ResultDTO<TourAirRealTimeDataDTO> getAirForecastData(@RequestParam Double x, Double y){
         log.info("tour로 보낼 데이터 조회");

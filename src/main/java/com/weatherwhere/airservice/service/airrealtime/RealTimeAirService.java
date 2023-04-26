@@ -1,6 +1,5 @@
 package com.weatherwhere.airservice.service.airrealtime;
 
-import java.text.ParseException;
 import java.util.List;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
@@ -10,17 +9,41 @@ import jakarta.transaction.Transactional;
 
 public interface RealTimeAirService {
 
-    //실시간 대기 정보 가져오는 메서드
-    Object getRealTimeAirData(String stationName) throws ParseException, org.json.simple.parser.ParseException;
+    /**
+     * 실시간 대기정보 Open API를 호출하여 데이터를 파싱하고 리턴하는 메서드
+     *
+     * @param stationName 측정소 명
+     * @return 실시간 대기정보 result
+     * @throws org.json.simple.parser.ParseException
+     */
+    Object getRealTimeAirData(String stationName) throws org.json.simple.parser.ParseException;
 
-    //엔티티 리스트를 만들어주는 메서드
+    /**
+     * DB에 저장할 실시간 대기정보 데이터들을 List<RealTimeAirEntity>로 리턴,
+     * IndexOutOfBoundsException이 발생하면 -1 값을 넣어 줌
+     *
+     * @param stationNameDtoList CSV 파일로부터 읽어온 측정소 명 리스트
+     * @return List<RealTimeAirEntity> 리턴, 실패하면 예외처리
+     */
     @Transactional
     List<RealTimeAirEntity> makeEntityList(List<StationNameDTO> stationNameDtoList);
 
-    //x, y 좌표 받아서 DB에서 해당하는 대기정보 보여주는 메서드
+    /**
+     * 위경도 x, y의 값을 받아서 가까운 측정소 이름을 검색 후 그 측정소의 대기 정보를 DB에서 가져와서
+     * ResultDTO<List<RealTimeAirEntity>> 로 리턴합니다
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 실시간 대기정보 ResultDTO<List<RealTimeAirEntity>>
+     */
     Object getRealTimeDBData(Double x, Double y) throws org.json.simple.parser.ParseException;
 
-    //Dto -> Entity 메서드
+    /**
+     * RealTimeAirDTO를 RealTimeAirEntity로 변환하여 RealTimeAirEntity를 리턴합니다.
+     *
+     * @param dto RealTimeAirDTO
+     * @return RealTimeAirEntity 리턴
+     */
     default RealTimeAirEntity ToEntity(RealTimeAirDTO dto) {
         RealTimeAirEntity entity = RealTimeAirEntity.builder()
                 .stationName(dto.getStationName())
@@ -44,6 +67,13 @@ public interface RealTimeAirService {
     }
 
     //Entity -> Dto 메서드
+
+    /**
+     * RealTimeEntity를 RealTimeDTO로 변환하여 RealTimeAirDTO를 리턴합니다.
+     *
+     * @param entity RealTimeAirEntity
+     * @return RealTimeAirDTO
+     */
     default RealTimeAirDTO ToDto(RealTimeAirEntity entity) {
         RealTimeAirDTO dto = RealTimeAirDTO.builder()
                 .stationName(entity.getStationName())
