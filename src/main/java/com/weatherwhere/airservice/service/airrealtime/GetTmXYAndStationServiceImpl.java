@@ -1,4 +1,4 @@
-package com.weatherwhere.airservice.service;
+package com.weatherwhere.airservice.service.airrealtime;
 
 import java.net.URI;
 
@@ -19,10 +19,16 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
+public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService {
 
-    // kakao 좌표계 변환 api url
-    // https://developers.kakao.com/docs/latest/ko/local/dev-guide#trans-coord
+    /**
+     * 경도와 위도를 tmX, tmY로 변환하기 위하여 카카오 api 호출할 url을 리턴합니다.
+     * api 설명: https://developers.kakao.com/docs/latest/ko/local/dev-guide#trans-coord
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 위경도를 통하여 tmX, tmY를 조회하는 카카오 api url를 리턴
+     */
     private String makeKaKaoApiUrl(Double x, Double y) {
         String Host = "https://dapi.kakao.com";
         String path = "/v2/local/geo/transcoord.json";
@@ -33,8 +39,14 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
         return url;
     }
 
-    // 공공데이터, tmx, tmy 좌표로 근접측정소명 찾기 api url
-    // https://www.data.go.kr/iim/api/selectAPIAcountView.do
+    /**
+     * tmX, tmY 좌표로 근접측정소명을 찾을 수 있는 공공데이터 api url을 리턴합니다.
+     * api 설명: https://www.data.go.kr/iim/api/selectAPIAcountView.do
+     *
+     * @param tx tmX 좌표
+     * @param ty tmY 좌표
+     * @return tmXY 좌표로 근접측정소명을 찾을 수 있는 공공데이터 api Url 리턴
+     */
     private String makeStationApiUrl(Double tx, Double ty) {
         String BASE_URL = "http://apis.data.go.kr/B552584/MsrstnInfoInqireSvc/getNearbyMsrstnList?";
         String tmX = "tmX=" + tx;
@@ -45,7 +57,13 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
         return url;
     }
 
-    // 카카오맵 좌표 변환 api 호출 데이터 json 파싱해서 tmx, tmy 가져오기
+    /**
+     * 카카오 api에서 호출한 결과 json을 파싱하여 tmX, TmY 값을 Double[]로 리턴합니다.
+     *
+     * @param response 카카오 api에서 호출한 결과 json 데이터
+     * @return response를 파싱하여 tmX, TmY 값을 Double[]로 리턴, 그렇지 않으면 throw 예외
+     * @throws ParseException
+     */
     private Double[] parseTmXYJson(ResponseEntity<String> response) throws ParseException {
         //JSON Object로 body를 얻어본다...
         JSONParser jsonParser = new JSONParser();
@@ -56,7 +74,14 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
         Double tmY = (Double)document.get("y");
         return new Double[]{tmX,tmY};
     }
-    // tmXY 좌표로 근접측정소명 api 호출 데이터 json 파싱해서 측정소명 출력
+
+    /**
+     * 공공데이터 api를 호출한 json 결과를 파싱하여 측정소명을 리턴합니다.
+     *
+     * @param res 공공데이터 api를 호출한 json 데이터
+     * @return res를 파싱하여 측정소명을 리턴, 그렇지 않으면 throw 예외
+     * @throws ParseException
+     */
     private String parseStationNameJson(String res) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject)jsonParser.parse(res);
@@ -69,10 +94,16 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
         return stationName;
     }
 
-    // 위도 x, 경도 y로 tmX, tmY 좌표 얻기(카카오맵 api 사용)
-    private Double[] TmXYApi(Double x, Double y) {
+    /**
+     * 위경도로 카카오 맵 api를 호출하여 받아온 데이터를 파싱하여 tmX, tmY 좌표를 리턴합니다.
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 위경도에 해당하는 tmX, tmY 좌표를 리턴, 그렇지 않으면 예외 처리
+     */
+    private Double[] tmXYApi(Double x, Double y) {
         String url = makeKaKaoApiUrl(x,y);
-
+        Double[] result = new Double[2];
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -81,14 +112,21 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
             URI resultUrl = URI.create(url);
             RequestEntity<String> rq = new RequestEntity<>(headers, HttpMethod.GET, resultUrl);
             ResponseEntity<String> re = restTemplate.exchange(rq, String.class);
-            return parseTmXYJson(re);
+            result = parseTmXYJson(re);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // 임시로 api 호출 실패했을 때 null 출력! 고민해보기
+
+        return result;
     }
 
-    // tmX, tmY 좌표로 측정소명 받아오기(공공데이터 api 사용)
+    /**
+     * tmX,Y 좌표로 공공데이터 api를 호출하여 받아온 데이터를 파싱하여 측정소명을 리턴합니다.
+     *
+     * @param tmX tmX 좌표
+     * @param tmY tmY 좌표
+     * @return tmX, TmY에 해당하는 측정소명을 리턴, 그렇지 않으면 예외 처리
+     */
     private String getStationNameApiByTmXY(Double tmX, Double tmY) {
         String url = makeStationApiUrl(tmX,tmY);
         String result = "";
@@ -103,13 +141,20 @@ public class GetTmXYAndStationServiceImpl implements GetTmXYAndStationService{
             e.printStackTrace();
         }
 
-        return result; // 임시로 api 호출 실패했을 때 null 출력! 고민해보기
+        return result;
     }
 
+    /**
+     * 경도 x, 위도 y로 측정소명을 리턴합니다.
+     *
+     * @param x 경도
+     * @param y 위도
+     * @return 경도와 위도로 찾은 측정소명을 리턴
+     */
     @Override
     public String getStationName(Double x, Double y) {
         // 메서드 getTmXY를 사용하여 경도 x, 위도 y로 tmX, tmY로 변환하기
-        Double [] tmXY = TmXYApi(x,y); // tmXY[0]: tmX, tmXY[1]: tmY
+        Double [] tmXY = tmXYApi(x,y); // tmXY[0]: tmX, tmXY[1]: tmY
         String stationName = getStationNameApiByTmXY(tmXY[0], tmXY[1]);
         return stationName;
     }

@@ -35,7 +35,7 @@ public class AirserviceApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:3000","https://dpezzthgwnnvc.cloudfront.net");
+                registry.addMapping("/**").allowedOrigins("http://localhost:3000","https://dpezzthgwnnvc.cloudfront.net","https://m.weatherwhere.link");
             }
         };
     }

@@ -31,14 +31,25 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
 
     private final AirForecastRepository airForecastRepository;
 
-    // String-> LocalDate
-    private LocalDate StringToLocalDate(String stringDate) throws java.text.ParseException {
+    /**
+     * String으로 받은 날짜를 LocalDate로 타입을 변환한 LocalDate를 리턴합니다.
+     *
+     * @param stringDate String 타입의 날짜
+     * @return
+     * @throws java.text.ParseException
+     */
+    private LocalDate stringToLocalDate(String stringDate) throws java.text.ParseException {
         // DateTimeFormatter.ISO_DATE는 "yyyy-mm-dd"를 상수로 선언한 것
         LocalDate parseDate = LocalDate.parse(stringDate, DateTimeFormatter.ISO_DATE);
         return parseDate;
     }
 
-    // 공공데이터 api url
+    /**
+     * 주어진 날짜를 가지고 대기 주간 예보 공공데이터 api url를 리턴합니다.
+     *
+     * @param date url에 필요한 호출할 찾을 날짜
+     * @return 날짜와 함께 url를 만들었다면 String 타입의 url를 리턴
+     */
     private String makeUrl(LocalDate date){
         String BASE_URL = "https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustWeekFrcstDspth";
         String serviceKey = "?ServiceKey="+System.getProperty("AIR_FORECAST_SERVICE_KEY_DE");
@@ -51,7 +62,14 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         return url;
     }
 
-    // JSON 파싱해서 4일 정보 저장
+    /**
+     * 호출받은 문자열을 파싱해서 4일의 주간예보 데이터로 HashMap<LocalDate, String>을 리턴합니다.
+     *
+     * @param result api를 호출하여 받은 json 값
+     * @return 문자열을 4일의 주간예보 데이터로 변환하였다면 HashMap<LocalDate, String>를 리턴, 그렇지 않다면 예외를 throw
+     * @throws ParseException
+     * @throws java.text.ParseException
+     */
     private HashMap<LocalDate,String> jsonParsing(String result) throws ParseException, java.text.ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
@@ -68,10 +86,10 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         String fourthData = (String)item.get("frcstFourCn");
 
         // 4일 날짜
-        LocalDate firstDate = StringToLocalDate((String)item.get("frcstOneDt"));
-        LocalDate secondDate = StringToLocalDate((String)item.get("frcstTwoDt"));
-        LocalDate thirdDate = StringToLocalDate((String)item.get("frcstThreeDt"));
-        LocalDate fourthDate = StringToLocalDate((String)item.get("frcstFourDt"));
+        LocalDate firstDate = stringToLocalDate((String)item.get("frcstOneDt"));
+        LocalDate secondDate = stringToLocalDate((String)item.get("frcstTwoDt"));
+        LocalDate thirdDate = stringToLocalDate((String)item.get("frcstThreeDt"));
+        LocalDate fourthDate = stringToLocalDate((String)item.get("frcstFourDt"));
 
         HashMap<LocalDate,String> forecastData=new HashMap<>(); // date와 정보
         forecastData.put(firstDate,firstData);
@@ -82,7 +100,12 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         return forecastData;
     }
 
-    // db 저장
+    /**
+     * List<AirForcastDTO>를 db에 업데이트한 값을 List<AirForecastDTO>로 리턴합니다.
+     *
+     * @param dtoList db에 업데이트할 대기 주간 예보 데이터 리스트
+     * @return 대기 주간 예보 데이터를 db에 업데이트 성공했다면 List<AirForecastDTO> 리턴
+     */
     private List<AirForecastDTO> saveDb(List<AirForecastDTO> dtoList) {
         List<AirForecastDTO> resultDtoList = new ArrayList<>();
 
@@ -95,8 +118,12 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         return resultDtoList;
     }
 
-
-    // 대기 주간예보 api 데이터 받아오기 & db 저장
+    /**
+     * 검색할 날짜 LocalDate와 함께 공공데이터 api를 호출하여 받은 데이터를 파싱하여 db에 업데이트한 대기 주간 예보 데이터, ResultDTO<List<AirForecastDTO>>를 리턴합니다.
+     *
+     * @param date 검색할 날짜
+     * @return api를 호출하고 데이터를 파싱하여 db에 업데이트를 성공했다면 ResultDTO<List<AirForecastDTO>> 리턴, 그렇지 않다면 예외처리
+     */
     @Override
     @Transactional
     public ResultDTO<List<AirForecastDTO>> getApiData(LocalDate date) {
@@ -131,7 +158,14 @@ public class AirForecastApiServiceImpl implements AirForecastApiService {
         return ResultDTO.of(HttpStatus.OK.value(),"대기 주간예보 데이터를 저장하는데 성공하였습니다.",dtoList);
     }
 
-    // String 가공하여 Dto에 넣어주는 메서드
+
+    /**
+     * 해당 날짜 LocalDate에 해당하는 String 데이터를 가공하여 List<AirForecastDTO>로 리턴합니다.
+     *
+     * @param data 해당 날짜에 해당하는 json을 파싱하여 얻은 가공이 필요한 주간 예보 데이터
+     * @param date 예보 날짜
+     * @return data를 주간 예보 데이터로 가공을 하였다면 List<AirForecastDTO> 리턴
+     */
     private List<AirForecastDTO> dataToDto(String data, LocalDate date) {
         /*
          * "서울 : 높음, 인천 : 높음, 경기북부 : 높음, 경기남부 : 높음, 강원영서 : 높음, 강원영동 : 낮음
