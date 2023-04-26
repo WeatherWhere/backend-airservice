@@ -19,6 +19,11 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class ParseCSVServiceImpl implements ParseCSVService {
+    /**
+     * CSV 파일을 읽어 StationNameDTO 객체를 생성하고, 이를 담고 있는 List(List<StationNameDTO>)를 리턴합니다.
+     *
+     * @return 측정소 명 List(List<StationNameDTO>)를 리턴
+     */
     @Override
     public List<StationNameDTO> ParseCSV() {
         ClassPathResource resource = new ClassPathResource("station_list.csv");
@@ -57,7 +62,11 @@ public class ParseCSVServiceImpl implements ParseCSVService {
         return stationNames;
     }
 
-
+    /**
+     * CSV 파일을 읽어 AddrDTO 객체를 생성하고, 이를 담고 있는 List(List<AddrDTO>)를 리턴합니다.
+     *
+     * @return 주소 List(List<AddrDTO>)를 리턴
+     */
     @Override
     public List<AddrDTO> addrParseCSV() {
         ClassPathResource resource = new ClassPathResource("change_addr.csv");

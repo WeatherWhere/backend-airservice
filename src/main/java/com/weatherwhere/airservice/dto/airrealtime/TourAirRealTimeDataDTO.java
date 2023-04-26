@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * Tour Service에 넘겨줄 데이터의 DTO
+ */
 public class TourAirRealTimeDataDTO {
     private String stationName;
     private LocalDateTime dataTime;
