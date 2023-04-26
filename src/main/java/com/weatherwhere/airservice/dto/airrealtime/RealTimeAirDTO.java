@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * DB에 측정소 명 기준으로 조회하거나 저장할 실시간 대기 정보 DTO
+ */
 public class RealTimeAirDTO {
     private String stationName;
     private LocalDateTime dataTime;
