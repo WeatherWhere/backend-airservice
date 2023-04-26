@@ -5,6 +5,7 @@ import com.weatherwhere.airservice.dto.ResultDTO;
 import com.weatherwhere.airservice.dto.airrealtime.RealTimeAirDTO;
 import com.weatherwhere.airservice.dto.airrealtime.StationNameDTO;
 import com.weatherwhere.airservice.repository.airrealtime.RealTimeAirRepository;
+import com.weatherwhere.airservice.repository.airrealtime.StationNameRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
