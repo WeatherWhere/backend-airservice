@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * 대기 주간 예보를 조회할 때 사용할 대기 주간 예보 복합키 DTO
+ */
 public class SearchAirForecastDTO {
 
     private LocalDate baseDate;

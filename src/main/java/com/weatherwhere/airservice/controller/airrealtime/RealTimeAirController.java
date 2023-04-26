@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherwhere.airservice.domain.airrealtime.RealTimeAirEntity;
 import com.weatherwhere.airservice.dto.ResultDTO;
-import com.weatherwhere.airservice.dto.tour.TourAirRealTimeDataDTO;
+import com.weatherwhere.airservice.dto.airrealtime.TourAirRealTimeDataDTO;
 import com.weatherwhere.airservice.service.airrealtime.RealTimeAirService;
-import com.weatherwhere.airservice.service.tour.TourRankAirDataService;
+import com.weatherwhere.airservice.service.airrealtime.TourRankAirDataService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

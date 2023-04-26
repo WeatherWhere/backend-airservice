@@ -24,27 +24,13 @@ import lombok.extern.log4j.Log4j2;
 public class GetAirForecastDataServiceImpl implements GetAirForecastDataService{
     private final AirForecastRepository airForecastRepository;
 
-    /*
-    @Override
-    @Transactional
-    public ResultDTO<AirForecastDTO> getAirForecastOneDay(SearchAirForecastDTO searchAirForecastDto){
-        AirForecastId airForecastId = new AirForecastId(searchAirForecastDto.getBaseDate(),searchAirForecastDto.getCity());
-        AirForecastDTO data = new AirForecastDTO();
-        try {
-            AirForecastEntity airForecastEntity = airForecastRepository.findByAirForecastId(airForecastId)
-                .orElseThrow(() -> new NoSuchElementException());
-            data = entityToDto(airForecastEntity);
 
-            log.info("주간예보: {}",data);
-        }catch (Exception e) {
-            e.getStackTrace();
-            log.error(e.getMessage());
-        }
-        return ResultDTO.of(HttpStatus.OK.value(),"대기 주간예보를 조회하는데 성공하였습니다.",data);
-    }
-*/
-
-    // 해당 위치 5일 대기오염 주간예보 DB 가져오기
+    /**
+     * 해당 날짜와 지역에 해당하는 5일의 주간예보를 DB에서 조회하고 ResultDTO<List<AirForecastDTO>>를 리턴합니다.
+     *
+     * @param searchAirForecastDto DB에서 조회할 찾을 시작 날짜와 지역
+     * @return DB에서 5일의 주간예보를 조회하는데 성공한다면 ResultDTO<List<AirForecastDTO>> 리턴, 그렇지 않다면 예외처리
+     */
     @Override
     @Transactional
     public ResultDTO<List<AirForecastDTO>> getFiveDaysDataOfLocation(SearchAirForecastDTO searchAirForecastDto) {
